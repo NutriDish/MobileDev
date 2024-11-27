@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "StoryApp"
+rootProject.name = "NutriDish"
 include(":app")
  
