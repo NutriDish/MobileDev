@@ -1,8 +1,8 @@
 package com.dicoding.nutridish.data
 
-import com.dicoding.nutridish.data.api.ApiService
-import com.dicoding.nutridish.data.api.LoginResponse
-import com.dicoding.nutridish.data.api.RegisterResponse
+import com.dicoding.nutridish.data.api.retrofit.ApiService
+import com.dicoding.nutridish.data.api.response.LoginResponse
+import com.dicoding.nutridish.data.api.response.RegisterResponse
 import com.dicoding.nutridish.data.pref.UserModel
 import com.dicoding.nutridish.data.pref.UserPreference
 import kotlinx.coroutines.flow.Flow
