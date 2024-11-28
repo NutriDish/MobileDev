@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.databinding.ActivityMainBinding
-import com.dicoding.nutridish.home.HomeActivity
 import com.dicoding.nutridish.login.LoginActivity
+import com.dicoding.nutridish.view.HomeActivity
 import com.dicoding.nutridish.signup.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
@@ -43,7 +43,9 @@ class MainActivity : AppCompatActivity() {
 
 
         val textView = findViewById<TextView>(R.id.textLogin)
+
         val text = getString(R.string.already_have_account)
+
         val spannableString = SpannableString(text)
 
         val clickableSpan = object : ClickableSpan() {
