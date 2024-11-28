@@ -2,45 +2,73 @@ package com.dicoding.nutridish.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.databinding.ActivityHomeBinding
-import com.dicoding.nutridish.view.dashboard.DashboardFragment
-import com.dicoding.nutridish.view.explore.ExploreFragment
-import com.dicoding.nutridish.view.favorite.FavoriteFragment
-import com.dicoding.nutridish.view.profile.ProfileFragment
+import com.qamar.curvedbottomnaviagtion.CurvedBottomNavigation
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Load default fragment
-        if (savedInstanceState == null) {
-            loadFragment(DashboardFragment())
-        }
+        // Initialize NavHost and NavController
+        initNavHost()
 
-        // Set up bottom navigation
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            val fragment: Fragment = when (item.itemId) {
-                R.id.nav_home -> DashboardFragment()
-                R.id.nav_explore -> ExploreFragment()
-                R.id.nav_favorite -> FavoriteFragment()
-                R.id.nav_profile -> ProfileFragment()
-                else -> DashboardFragment()
+        // Setup CurvedBottomNavigation
+        setUpBottomNavigation()
+    }
+
+    private fun initNavHost() {
+            val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        navController = navHostFragment.navController
+    }
+
+    private fun setUpBottomNavigation() {
+        val bottomNavigationItems = listOf(
+            CurvedBottomNavigation.Model(HOME_ITEM, getString(R.string.dashboard), R.drawable.ic_home),
+            CurvedBottomNavigation.Model(OFFERS_ITEM, getString(R.string.explore), R.drawable.ic_explore),
+            CurvedBottomNavigation.Model(SECTION_ITEM, getString(R.string.favorite), R.drawable.ic_favorite),
+            CurvedBottomNavigation.Model(MORE_ITEM, getString(R.string.profile), R.drawable.ic_profile),
+        )
+
+        binding.bottomNavigation.apply {
+            bottomNavigationItems.forEach { add(it) }
+
+            // Handle menu item clicks
+            setOnClickMenuListener {
+                when (it.id) {
+                    HOME_ITEM -> navController.navigate(R.id.nav_home)
+                    OFFERS_ITEM -> navController.navigate(R.id.nav_explore)
+                    SECTION_ITEM -> navController.navigate(R.id.nav_favorite)
+                    MORE_ITEM -> navController.navigate(R.id.nav_profile)
+                }
             }
-            loadFragment(fragment)
-            true
+
+            // Show default menu item
+            show(HOME_ITEM)
         }
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, fragment)
-            .commit()
+    override fun onBackPressed() {
+        if (navController.currentDestination?.id == HOME_ITEM) {
+            super.onBackPressed()
+        } else {
+            navController.popBackStack(R.id.nav_home, false)
+        }
+    }
+
+    companion object {
+        val HOME_ITEM = R.id.nav_home
+        val OFFERS_ITEM = R.id.nav_explore
+        val SECTION_ITEM = R.id.nav_favorite
+        val MORE_ITEM = R.id.nav_profile
     }
 }
