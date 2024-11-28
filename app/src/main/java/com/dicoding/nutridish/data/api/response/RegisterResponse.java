@@ -1,4 +1,4 @@
-package com.dicoding.nutridish.data.api;
+package com.dicoding.nutridish.data.api.response;
 
 import com.google.gson.annotations.SerializedName;
 

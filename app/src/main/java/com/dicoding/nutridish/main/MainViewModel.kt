@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dicoding.nutridish.data.UserRepository
-import com.dicoding.nutridish.data.api.LoginResponse
-import com.dicoding.nutridish.data.api.RegisterResponse
+import com.dicoding.nutridish.data.api.response.LoginResponse
+import com.dicoding.nutridish.data.api.response.RegisterResponse
 import com.dicoding.nutridish.data.pref.UserModel
 import com.dicoding.nutridish.data.pref.UserPreference
 import kotlinx.coroutines.launch

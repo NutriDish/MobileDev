@@ -1,5 +1,7 @@
-package com.dicoding.nutridish.data.api
+package com.dicoding.nutridish.data.api.retrofit
 
+import com.dicoding.nutridish.data.api.response.LoginResponse
+import com.dicoding.nutridish.data.api.response.RegisterResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
