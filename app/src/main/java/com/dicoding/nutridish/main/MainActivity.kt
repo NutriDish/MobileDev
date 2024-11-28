@@ -43,7 +43,9 @@ class MainActivity : AppCompatActivity() {
 
 
         val textView = findViewById<TextView>(R.id.textLogin)
-        val text = "Sudah Punya Akun ? Login"
+
+        val text = getString(R.string.already_have_account)
+
         val spannableString = SpannableString(text)
 
         val clickableSpan = object : ClickableSpan() {
