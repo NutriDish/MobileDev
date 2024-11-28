@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.dicoding.nutridish.view.dashboard.DashboardFragment"
+        android:label="DashboardFragment" />
+
+    <fragment
+        android:id="@+id/nav_explore"
+        android:name="com.dicoding.nutridish.view.explore.ExploreFragment"
+        android:label="ExploreFragment" />
+
+    <fragment
+        android:id="@+id/nav_favorite"
+        android:name="com.dicoding.nutridish.view.favorite.FavoriteFragment"
+        android:label="FavoriteFragment" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.dicoding.nutridish.view.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+</navigation>
