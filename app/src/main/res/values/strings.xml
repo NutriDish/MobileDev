@@ -1,20 +1,20 @@
 <resources>
     <string name="app_name">StoryApp</string>
     <string name="foto_main">foto_main</string>
-    <string name="main_title">Selamat datang di Dicoding Story!</string>
-    <string name="main_description">Mau berbagi ilmu tentang Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding Story aja!</string>
+    <string name="main_title">Unlock Culinary Delights, Where Every Recipe Sparks a Journey!</string>
+    <string name="main_description">Discover a world of delicious and nutritious recipes designed for busy lifestyles.</string>
     <string name="main_login">Masuk</string>
-    <string name="main_signup">Daftar</string>
+    <string name="main_signup">Start Your Journey</string>
 
     <string name="signup">Daftar</string>
     <string name="login">Masuk</string>
     <string name="message_welcome_page">Mau belajar Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding aja!</string>
     <string name="title_welcome_page">Selamat datang di Dicoding!</string>
-    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="title_signup_page">Sign Up</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="message_login_page">Masukkan dulu datamu ya</string>
-    <string name="title_login_page">Sudah siap untuk upgrade skill?</string>
+    <string name="message_login_page">New user? Create an account</string>
+    <string name="title_login_page">Sign In</string>
     <string name="name">Nama</string>
     <string name="message_main_page">Selamat Belajar di Dicoding.</string>
     <string name="greeting">Halo %1$s,</string>
@@ -25,4 +25,12 @@
     <string name="ed_email_signup">Masukkan Email</string>
     <string name="ed_email_login">Masukkan Email</string>
     <string name="ed_password_login">Masukkan Password</string>
+    <string name="background">Background</string>
+    <string name="Text_login">Already have an account? Login</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    <string name="forgotpw">Forgot Password?</string>
+    <string name="message_signup_page">Already a user here? Sign In</string>
+    <string name="username_textview">Username</string>
+    <string name="passwordcf">Confirm Password</string>
+
 </resources>
