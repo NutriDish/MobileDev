@@ -16,7 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.databinding.ActivityMainBinding
-import com.dicoding.nutridish.home.HomeActivity
+import com.dicoding.nutridish.login.LoginActivity
+import com.dicoding.nutridish.view.HomeActivity
 import com.dicoding.nutridish.signup.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
@@ -42,31 +43,31 @@ class MainActivity : AppCompatActivity() {
 
 
         val textView = findViewById<TextView>(R.id.textLogin)
-        val text = "Belum punya akun? Register"
+        val text = "Sudah Punya Akun ? Login"
         val spannableString = SpannableString(text)
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 // Pindah ke halaman RegisterActivity
-                val intent = Intent(this@MainActivity, SignUpActivity::class.java)
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
         }
 
         // Menentukan kata "Register" agar bisa diklik
-        val startIndex = text.indexOf("Register")
-        val endIndex = startIndex + "Register".length
+        val startIndex = text.indexOf("Login")
+        val endIndex = startIndex + "Login".length
         spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         textView.text = spannableString
         textView.movementMethod = LinkMovementMethod.getInstance() // Untuk mengaktifkan klik
 
 
-//        // Navigating to SignUpActivity when register button is clicked
-//        binding.registerButton.setOnClickListener {
-//            val intent = Intent(this@MainActivity, SignUpActivity::class.java)
-//            startActivity(intent)
-//        }
+        // Navigating to SignUpActivity when register button is clicked
+        binding.registerButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, SignUpActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 

@@ -9,6 +9,7 @@ import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.databinding.ActivityLoginBinding
 import com.dicoding.nutridish.main.MainActivity
 import com.dicoding.nutridish.main.MainViewModel
+import com.dicoding.nutridish.view.HomeActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -42,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
             if (response != null && !response.isError) {
                 Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show()
                 // Pindah ke halaman utama
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             } else {
                 Toast.makeText(this, response?.getMessage() ?: "Login Gagal", Toast.LENGTH_SHORT).show()
