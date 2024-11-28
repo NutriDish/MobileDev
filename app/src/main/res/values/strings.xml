@@ -25,6 +25,11 @@
     <string name="ed_email_signup">Masukkan Email</string>
     <string name="ed_email_login">Masukkan Email</string>
     <string name="ed_password_login">Masukkan Password</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="explore">Explore</string>
+    <string name="favorite">Favorite</string>
+    <string name="profile">Profile</string>
     <string name="background">Background</string>
     <string name="Text_login">Already have an account? Login</string>
     <string name="already_have_account">Already have an account? Login</string>
