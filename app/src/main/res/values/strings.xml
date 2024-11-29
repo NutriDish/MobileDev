@@ -37,5 +37,7 @@
     <string name="message_signup_page">Already a user here? Sign In</string>
     <string name="username_textview">Username</string>
     <string name="passwordcf">Confirm Password</string>
+    <string name="header_profile">Profile</string>
+    <string name="header_favorite">Favorite</string>
 
 </resources>
