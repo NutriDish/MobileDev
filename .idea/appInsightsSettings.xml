@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.dicoding.nutridish" />
+                  <option name="mobileSdkAppId" value="1:945034773009:android:031221ceefb855bb5167b0" />
+                  <option name="projectId" value="nutri-56c4a" />
+                  <option name="projectNumber" value="945034773009" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
