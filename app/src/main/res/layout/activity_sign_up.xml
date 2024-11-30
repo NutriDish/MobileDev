@@ -109,18 +109,18 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/usernameTextView"
+            android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="20dp"
-            android:text="@string/username_textview"
+            android:text="Date"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameEditTextLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/usernameTextLayout"
+            android:id="@+id/dateTextLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -129,16 +129,16 @@
             android:background="@drawable/rectangle_18"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/usernameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/dateTextView"
             app:startIconDrawable="@drawable/ic_baseline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/usernameEditTextLayout"
+                android:id="@+id/dateEditTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/ed_email_signup"
-                android:inputType="textEmailAddress"
+                android:hint="Enter Date"
+                android:inputType="date"
                 android:paddingStart="48dp"
                 android:paddingLeft="16dp"
                 android:paddingTop="17dp"
@@ -156,7 +156,7 @@
             android:text="@string/email"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/usernameTextLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/dateTextLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailEditTextLayout"
