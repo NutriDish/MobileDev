@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NutriDish</string>
+    <string name="main_login">Masuk</string>
+    <string name="title_signup_page">Daftar</string>
+    <string name="name">Nama</string>
+    <string name="ed_name_signup">Masukkan Nama</string>
+    <string name="ed_password_signup">Masukkan Password</string>
+    <string name="ed_email_signup">Masukkan Email</string>
+    <string name="ed_email_login">Masukkan Email</string>
+    <string name="ed_password_login">Masukkan Password</string>
+</resources>

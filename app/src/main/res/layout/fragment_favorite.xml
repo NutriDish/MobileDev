@@ -60,6 +60,7 @@
                 app:queryHint="Search Favorite Recipe..." />
 
         </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content"
