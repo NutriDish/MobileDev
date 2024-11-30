@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -66,4 +67,6 @@ dependencies {
     implementation(libs.androidx.exifinterface)
 
     implementation (libs.curvedbottomnavigation)
+
+    implementation(libs.circleimageview)
 }
