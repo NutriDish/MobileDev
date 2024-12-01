@@ -33,5 +33,23 @@
     <string name="header_favorite">Favorite</string>
     <string name="login">Login</string>
     <string name="signup">Register</string>
+    <string name="back">kembali</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="title_update_page">Update Your Profile Here !</string>
+    <string name="message_update_page">Fill or Edit the form below</string>
+    <string name="about_app_title">About Nutridish</string>
+    <string name="about_app_description">
+        Nutridish is your ultimate guide to exploring and preparing healthy food recipes. Discover nutritious meals tailored to your lifestyle and taste.
+    </string>
+    <string name="creators_title">Creators</string>
+    <string name="creator_1">defaultuser</string>
+    <string name="creator_2">John Doe</string>
+    <string name="creator_3">Jane Smith</string>
+    <string name="creator_4">Emily Brown</string>
+    <string name="creator_5">Michael Green</string>
+    <string name="creator_6">Sarah Wilson</string>
+    <string name="creator_7">David Black</string>
+    <string name="version">Version: 1.0.0</string>
+    <string name="title_about_page">About App</string>
 
 </resources>
