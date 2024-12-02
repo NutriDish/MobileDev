@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Nutridish"
         tools:targetApi="31">
         <activity
+            android:name=".personalization.PersonalizeActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.profile.settings.UpdateProfileActivity"
             android:exported="true" />
         <activity
