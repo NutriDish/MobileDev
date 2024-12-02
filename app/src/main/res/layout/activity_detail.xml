@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    tools:context=".view.detail.DetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -31,15 +33,14 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="transparent"
+            android:background="@color/transparent"
             android:padding="8dp"
             android:text="Back"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintMarginStart="16dp"
-            app:layout_constraintMarginTop="16dp" />
+            />
 
         <!-- Ratings and Favorite -->
         <LinearLayout
@@ -47,9 +48,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintMarginEnd="16dp"
-            app:layout_constraintMarginTop="16dp">
+            app:layout_constraintTop_toTopOf="parent">
 
             <!-- Star Rating -->
             <LinearLayout
@@ -103,8 +102,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/dishSubtitle"
             app:layout_constraintBottom_toBottomOf="@id/backgroundImage"
-            app:layout_constraintMarginStart="16dp"
-            app:layout_constraintMarginBottom="16dp" />
+            />
 
         <!-- Dish Subtitle -->
         <TextView
@@ -122,8 +120,7 @@
             android:shadowRadius="4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/backgroundImage"
-            app:layout_constraintMarginStart="16dp"
-            app:layout_constraintMarginBottom="16dp" />
+            />
 
         <!-- Timer -->
         <LinearLayout
@@ -132,9 +129,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/backgroundImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintMarginBottom="16dp"
-            app:layout_constraintMarginEnd="16dp">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:layout_margin="10dp"

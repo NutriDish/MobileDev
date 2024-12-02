@@ -1,5 +1,6 @@
 package com.dicoding.nutridish.view.detail
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.dicoding.nutridish.R
 
 class DetailActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

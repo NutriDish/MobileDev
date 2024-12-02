@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/filterTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Filter Options"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/caloriesInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Calories"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@id/filterTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/proteinInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Protein"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@id/caloriesInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/fatInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Fat"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@id/proteinInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/sodiumInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Protein"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@id/fatInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Section: Boolean Filters -->
+    <TextView
+        android:id="@+id/booleanFiltersTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Boolean Filters"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/sodiumInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <CheckBox
+        android:id="@+id/filterBreakfast"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Breakfast"
+        app:layout_constraintTop_toBottomOf="@id/booleanFiltersTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/filterLunch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Lunch"
+        app:layout_constraintTop_toBottomOf="@id/filterBreakfast"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Button to Apply Filters -->
+    <Button
+        android:id="@+id/applyFiltersButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Apply"
+        app:layout_constraintTop_toBottomOf="@id/filterLunch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
