@@ -13,16 +13,24 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
+import com.dicoding.nutridish.databinding.ActivityLoginBinding
 import com.dicoding.nutridish.databinding.ActivityMainBinding
 import com.dicoding.nutridish.login.LoginActivity
+import com.dicoding.nutridish.personalization.PersonalizeActivity
 import com.dicoding.nutridish.view.HomeActivity
 import com.dicoding.nutridish.signup.SignUpActivity
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this) // Make sure ViewModelFactory is correctly set up
     }
@@ -32,11 +40,50 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         // Observing user session
         viewModel.getSession().observe(this) { user ->
             if (user.isLogin) {
-                startActivity(Intent(this, HomeActivity::class.java))
+                auth.signInWithEmailAndPassword(user.email, user.password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val users = auth.currentUser
+                            if (users != null) {
+                                firestore.collection("users").document(users.uid).get()
+                                    .addOnSuccessListener { document ->
+                                        if (document.exists()) {
+                                            val weight = document.getLong("weight")?.toInt()
+                                            val age = document.getLong("age")?.toInt()
+
+                                            if (weight == 0 || age == 0) {
+                                                // Data personalisasi belum lengkap, arahkan ke PersonalizeActivity
+                                                startActivity(
+                                                    Intent(
+                                                        this,
+                                                        PersonalizeActivity::class.java
+                                                    )
+                                                )
+                                            } else {
+                                                // Data lengkap, lanjutkan ke HomeActivity
+                                                startActivity(
+                                                    Intent(
+                                                        this,
+                                                        HomeActivity::class.java
+                                                    )
+                                                )
+                                            }
+                                            finish()
+                                        }
+                                    }
+                            } else {
+                                lifecycleScope.launch {
+                                    viewModel.logout() // Logout user
+                                }
+                            }
+                        }
+                    }
                 finish() // Close the current activity
             }
         }
@@ -59,7 +106,12 @@ class MainActivity : AppCompatActivity() {
         // Menentukan kata "Register" agar bisa diklik
         val startIndex = text.indexOf("Login")
         val endIndex = startIndex + "Login".length
-        spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            clickableSpan,
+            startIndex,
+            endIndex,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         textView.text = spannableString
         textView.movementMethod = LinkMovementMethod.getInstance() // Untuk mengaktifkan klik
@@ -74,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
 
     // Handle window appearance (hide status bar)
-    private fun setupView() {
+    fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())

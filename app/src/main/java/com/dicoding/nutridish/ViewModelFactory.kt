@@ -9,7 +9,9 @@ import com.dicoding.nutridish.data.UserRepository
 import com.dicoding.nutridish.data.pref.UserPreference
 import com.dicoding.nutridish.data.pref.dataStore
 import com.dicoding.nutridish.di.Injection
+import com.dicoding.nutridish.login.LoginViewModel
 import com.dicoding.nutridish.main.MainViewModel
+import com.dicoding.nutridish.view.profile.ProfileViewModel
 
 class ViewModelFactory private constructor(
     private val userRepository: UserRepository,
@@ -20,6 +22,12 @@ class ViewModelFactory private constructor(
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(userRepository, userPreference) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(userPreference) as T
+            }
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+                LoginViewModel(userPreference) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

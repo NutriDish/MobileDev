@@ -58,4 +58,8 @@ class MainViewModel(private val repository: UserRepository, private val userPref
         }
     }
 
+    suspend fun logout() {
+        userPreference.logout()
+    }
+
 }
