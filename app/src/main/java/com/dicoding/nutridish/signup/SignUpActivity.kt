@@ -2,6 +2,8 @@ package com.dicoding.nutridish.signup
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +13,10 @@ import com.dicoding.nutridish.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import android.text.TextUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Patterns
+import android.widget.TextView
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -22,6 +27,28 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val textView = findViewById<TextView>(R.id.messageTextView)
+
+        val text = getString(R.string.message_signup_page)
+
+        val spannableString = SpannableString(text)
+
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                // Pindah ke halaman RegisterActivity
+                val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        // Menentukan kata "Register" agar bisa diklik
+        val startIndex = text.indexOf("Sign In")
+        val endIndex = startIndex + "Sign In".length
+        spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        textView.text = spannableString
+        textView.movementMethod = LinkMovementMethod.getInstance() // Untuk mengaktifkan klik
 
         // Inisialisasi Firebase Auth dan Firestore
         auth = FirebaseAuth.getInstance()
