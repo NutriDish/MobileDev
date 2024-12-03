@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.login.LoginActivity
+import com.dicoding.nutridish.main.MainActivity
 import com.dicoding.nutridish.view.profile.settings.AboutActivity
 import com.dicoding.nutridish.view.profile.settings.UpdateProfileActivity
 import kotlinx.coroutines.launch
@@ -46,7 +47,7 @@ class ProfileFragment : Fragment() {
         buttonLogout.setOnClickListener{
             lifecycleScope.launch {
                 viewModel.logout()
-                val intent = Intent(activity, LoginActivity::class.java)
+                val intent = Intent(activity, MainActivity::class.java)
                 startActivity(intent)
                 activity?.finish()
             }
