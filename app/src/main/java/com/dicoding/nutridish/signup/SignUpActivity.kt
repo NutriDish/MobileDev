@@ -16,12 +16,15 @@ import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Patterns
+import android.app.DatePickerDialog
+import java.util.Calendar
 import android.widget.TextView
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +56,27 @@ class SignUpActivity : AppCompatActivity() {
         // Inisialisasi Firebase Auth dan Firestore
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+        val calendar = Calendar.getInstance()
+
+        binding.dateEditTextLayout.setOnClickListener {
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            // Tampilkan DatePickerDialog
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Update EditText dengan tanggal yang dipilih
+                    val formattedDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
+                    binding.dateEditTextLayout.setText(formattedDate)
+                },
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
+        }
 
         // Tombol sign up diklik
         binding.signupButton.setOnClickListener {
