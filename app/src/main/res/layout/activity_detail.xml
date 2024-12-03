@@ -87,40 +87,20 @@
 
         <!-- Dish Title -->
         <TextView
-            android:layout_margin="10dp"
             android:id="@+id/dishTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Avocado Toast with Egg"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_margin="10dp"
             android:shadowColor="@android:color/black"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/dishSubtitle"
-            app:layout_constraintBottom_toBottomOf="@id/backgroundImage"
-            />
-
-        <!-- Dish Subtitle -->
-        <TextView
-            android:layout_margin="10dp"
-            android:id="@+id/dishSubtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Dominic Mysterio"
+            android:text="Avocado Toast with Egg"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/backgroundImage"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/backgroundImage"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Timer -->
         <LinearLayout
@@ -147,6 +127,21 @@
                 android:text="10 minutes"
                 android:textColor="@android:color/white" />
         </LinearLayout>
+
+        <!-- Nutrition Section-->
+        <TextView
+            android:id="@+id/nutritionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Nutrition"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/backgroundImage"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <!-- Ingredients Title -->
         <TextView
@@ -198,16 +193,7 @@
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
-        <!-- Description -->
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="This dish is a perfect blend of creamy avocado, protein-packed egg, and crunchy bread for a quick and delicious breakfast."
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            app:layout_constraintTop_toBottomOf="@id/ingredientsList" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
