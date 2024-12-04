@@ -7,4 +7,5 @@
     <color name="light_gray">#FCFDFF</color>
     <color name="light_orange">#FD9F00</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="dark_orange">#D37D00</color>
 </resources>

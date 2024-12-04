@@ -11,6 +11,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         // Observing user session
+        // Observing user session
         viewModel.getSession().observe(this) { user ->
             if (user.isLogin) {
                 auth.signInWithEmailAndPassword(user.email, user.password)
@@ -57,36 +59,35 @@ class MainActivity : AppCompatActivity() {
                                             val weight = document.getLong("weight")?.toInt()
                                             val age = document.getLong("age")?.toInt()
 
-                                            if (weight == 0 || age == 0) {
-                                                // Data personalisasi belum lengkap, arahkan ke PersonalizeActivity
-                                                startActivity(
-                                                    Intent(
-                                                        this,
-                                                        PersonalizeActivity::class.java
-                                                    )
-                                                )
+                                            val targetActivity = if (weight == 0 || age == 0) {
+                                                PersonalizeActivity::class.java
                                             } else {
-                                                // Data lengkap, lanjutkan ke HomeActivity
-                                                startActivity(
-                                                    Intent(
-                                                        this,
-                                                        HomeActivity::class.java
-                                                    )
-                                                )
+                                                HomeActivity::class.java
                                             }
-                                            finish()
+
+                                            startActivity(
+                                                Intent(this, targetActivity).apply {
+                                                    flags =
+                                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                }
+                                            )
                                         }
                                     }
-                            } else {
-                                lifecycleScope.launch {
-                                    viewModel.logout() // Logout user
-                                }
+                                    .addOnFailureListener {
+                                        // Handle Firestore failure
+                                        showToast("Failed to retrieve user data.")
+                                    }
+                            }
+                        } else {
+                            lifecycleScope.launch {
+                                viewModel.logout()
+                                showToast("Authentication failed.")
                             }
                         }
                     }
-                finish() // Close the current activity
             }
         }
+
 
 
         val textView = findViewById<TextView>(R.id.textLogin)
@@ -138,4 +139,9 @@ class MainActivity : AppCompatActivity() {
         }
         supportActionBar?.hide() // Hide the action bar
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 }
