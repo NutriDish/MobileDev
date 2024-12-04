@@ -76,8 +76,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
 
-    implementation("com.google.firebase:firebase-auth-ktx:21.1.0")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.play.services.auth)
 
 
 }
