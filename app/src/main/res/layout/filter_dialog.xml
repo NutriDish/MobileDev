@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
@@ -62,12 +63,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp" />
 
-    <!-- Section: Boolean Filters -->
+    <!-- Section: Waktu Makan -->
     <TextView
         android:id="@+id/booleanFiltersTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Boolean Filters"
+        android:text="Waktu Makan"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/sodiumInput"
@@ -93,15 +94,210 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <CheckBox
+        android:id="@+id/filterdinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Dinner"
+        app:layout_constraintTop_toBottomOf="@id/filterLunch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Section: Jenis Makanan -->
+    <TextView
+        android:id="@+id/jenisMakananFiltersTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Jenis Makanan"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filterdinner" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/jenisMakananFiltersTitle"
+        tools:layout_editor_absoluteX="16dp">
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="4"
+            android:padding="8dp">
+
+            <CheckBox
+                android:id="@+id/filtersnack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Snack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/jenisMakananFiltersTitle" />
+
+            <CheckBox
+                android:id="@+id/filterdesert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Desert"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/filtersnack"
+                app:layout_constraintTop_toBottomOf="@+id/jenisMakananFiltersTitle" />
+
+            <CheckBox
+                android:id="@+id/filtervegetarian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vegetarian"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/filterdesert"
+                app:layout_constraintTop_toBottomOf="@+id/jenisMakananFiltersTitle" />
+
+            <CheckBox
+                android:id="@+id/filtervegan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vegan"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/filtervegetarian"
+                app:layout_constraintTop_toBottomOf="@+id/jenisMakananFiltersTitle" />
+
+            <CheckBox
+                android:id="@+id/filterpescatarian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pecastarian"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filtervegan" />
+
+            <CheckBox
+                android:id="@+id/filterpaleo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paleo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterpescatarian" />
+
+            <CheckBox
+                android:id="@+id/filterdairyfree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dairy Free"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterpaleo" />
+
+            <CheckBox
+                android:id="@+id/filterpeanutfree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Peanut Free"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterdairyfree" />
+
+            <CheckBox
+                android:id="@+id/filtersoyfree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Soy Free"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterpeanutfree" />
+
+            <CheckBox
+                android:id="@+id/filterglutenfree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gluten Free"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filtersoyfree" />
+
+            <CheckBox
+                android:id="@+id/filterlowcarb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low Carb"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterglutenfree" />
+
+            <CheckBox
+                android:id="@+id/filterfatfree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fat Free"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterlowcarb" />
+
+            <CheckBox
+                android:id="@+id/filterlowcal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low Calorie"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterfatfree" />
+
+            <CheckBox
+                android:id="@+id/filterlowfat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low Fat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterlowcal" />
+
+            <CheckBox
+                android:id="@+id/filterlowsodium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low Sodium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterlowfat" />
+
+            <CheckBox
+                android:id="@+id/filterlowsugar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low Sugar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterlowsodium" />
+
+            <CheckBox
+                android:id="@+id/filterlowcholesterol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low Cholesterol"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterlowsugar" />
+        </GridLayout>
+    </ScrollView>
+
     <!-- Button to Apply Filters -->
     <Button
         android:id="@+id/applyFiltersButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Apply"
-        app:layout_constraintTop_toBottomOf="@id/filterLunch"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

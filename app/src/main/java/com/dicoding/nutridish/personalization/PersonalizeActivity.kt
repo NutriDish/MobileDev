@@ -62,7 +62,7 @@ class PersonalizeActivity : AppCompatActivity() {
             )
 
             firestore.collection("users").document(userId)
-                .set(data)
+                .set(data, com.google.firebase.firestore.SetOptions.merge())
                 .addOnSuccessListener {
                     sharedPreferences.edit().putBoolean("isFirstLogin", false).apply()
                     startActivity(Intent(this, HomeActivity::class.java))
@@ -73,4 +73,5 @@ class PersonalizeActivity : AppCompatActivity() {
                 }
         }
     }
+
 }

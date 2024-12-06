@@ -46,17 +46,6 @@
                     android:backgroundTint="@color/navy"
                     />
 
-                <!-- Title -->
-                <TextView
-                    android:id="@+id/headerTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/title_about_page"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>

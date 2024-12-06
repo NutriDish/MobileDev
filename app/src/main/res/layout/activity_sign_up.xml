@@ -129,7 +129,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateTextView"
-            app:startIconDrawable="@drawable/ic_baseline_person_24">
+            app:startIconDrawable="@drawable/baseline_calendar_month_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dateEditTextLayout"
@@ -252,19 +252,19 @@
                 android:paddingEnd="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-            <com.dicoding.nutridish.MyButton
-                android:id="@+id/signupButton"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="32dp"
-                android:backgroundTint="@color/navy"
-                android:text="@string/signup"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordconfirmEditTextLayout" />
+        <com.dicoding.nutridish.MyButton
+            android:id="@+id/signupButton"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="32dp"
+            android:backgroundTint="@color/navy"
+            android:text="@string/signup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordconfirmEditTextLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
