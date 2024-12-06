@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "945034773009",
-    "project_id": "nutri-56c4a",
-    "storage_bucket": "nutri-56c4a.firebasestorage.app"
+    "project_number": "539465960543",
+    "project_id": "orbital-bee-442114-t3",
+    "storage_bucket": "orbital-bee-442114-t3.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:945034773009:android:031221ceefb855bb5167b0",
+        "mobilesdk_app_id": "1:539465960543:android:61160870b7d4f75f605fea",
         "android_client_info": {
           "package_name": "com.dicoding.nutridish"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "945034773009-jvuajjmn06dvb6hvndh8k4ues9tlnb4d.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.dicoding.nutridish",
-            "certificate_hash": "fa020a9a1cfa49055fa37c813569ad3ed2cd38b1"
-          }
-        },
-        {
-          "client_id": "945034773009-037hgmo8nn1lpetr520mvelicoge0gkp.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA1oerTBSmpOQNnWsCZeWOn7C2iiA4keis"
+          "current_key": "AIzaSyBLWtVNiI-cvpBxs7hvp-JKliJPhLAnfuI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "945034773009-037hgmo8nn1lpetr520mvelicoge0gkp.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
