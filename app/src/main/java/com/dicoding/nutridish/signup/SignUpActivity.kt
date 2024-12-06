@@ -100,6 +100,24 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    private fun getNextUserId(callback: (Long?) -> Unit) {
+        val counterDocRef = firestore.collection("counters").document("userIdCounter")
+
+        firestore.runTransaction { transaction ->
+            val snapshot = transaction.get(counterDocRef)
+            val currentId = snapshot.getLong("value") ?: 0L
+            val newId = currentId + 1
+            transaction.update(counterDocRef, "value", newId)
+            newId
+        }.addOnSuccessListener { newId ->
+            callback(newId)
+        }.addOnFailureListener { e ->
+            Toast.makeText(this, "Gagal mendapatkan ID pengguna: ${e.message}", Toast.LENGTH_SHORT).show()
+            callback(null)
+        }
+    }
+
+
     private fun registerUser(name: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -107,14 +125,46 @@ class SignUpActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     user?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
                         if (emailTask.isSuccessful) {
-                            Toast.makeText(
-                                this,
-                                "Registrasi berhasil. Email verifikasi telah dikirim ke $email. Silakan verifikasi email Anda sebelum login.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            auth.signOut() // Logout setelah registrasi agar user tidak bisa langsung login
-                            startActivity(Intent(this, LoginActivity::class.java))
-                            finish()
+                            // Dapatkan auto-increment ID dan simpan data pengguna
+                            getNextUserId { autoIncrementId ->
+                                if (autoIncrementId != null) {
+                                    val userId = user.uid
+                                    val userData = mapOf(
+                                        "id" to autoIncrementId,
+                                        "name" to name,
+                                        "email" to email,
+                                        "weight" to 0,
+                                        "age" to 0,
+                                        "tags" to mapOf(
+                                            "pork" to false,
+                                            "alcohol" to false
+                                        )
+                                    )
+
+                                    // Simpan data pengguna ke Firestore
+                                    firestore.collection("users").document(userId)
+                                        .set(userData)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(
+                                                this,
+                                                "Registrasi berhasil. Email verifikasi telah dikirim ke $email. Silakan verifikasi email Anda sebelum login.",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            auth.signOut() // Logout setelah registrasi
+                                            startActivity(Intent(this, LoginActivity::class.java))
+                                            finish()
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Toast.makeText(
+                                                this,
+                                                "Gagal menyimpan data pengguna: ${e.message}",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                } else {
+                                    Toast.makeText(this, "Gagal mendapatkan ID pengguna", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         } else {
                             Toast.makeText(
                                 this,
@@ -129,28 +179,4 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
 
-    private fun saveUserToFirestore(userId: String, name: String, email: String) {
-        val user = hashMapOf(
-            "user_id" to userId,
-            "name" to name,
-            "weight" to 0, // Default weight, user can personalize later
-            "age" to 0, // Default age
-            "email" to email,
-            "tags" to mapOf(
-                "pork" to false,
-                "alcohol" to false
-            )
-        )
-
-        firestore.collection("users").document(userId)
-            .set(user)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Registrasi berhasil, data disimpan.", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Gagal menyimpan data: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 }

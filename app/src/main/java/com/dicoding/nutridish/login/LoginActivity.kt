@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
 
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this) // Make sure ViewModelFactory is correctly set up
+        ViewModelFactory.getInstance(this)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,26 +43,21 @@ class LoginActivity : AppCompatActivity() {
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                // Pindah ke halaman RegisterActivity
                 val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
                 startActivity(intent)
             }
         }
 
-        // Menentukan kata "Register" agar bisa diklik
         val startIndex = text.indexOf("account")
         val endIndex = startIndex + "account".length
         spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         textView.text = spannableString
-        textView.movementMethod = LinkMovementMethod.getInstance() // Untuk mengaktifkan klik
+        textView.movementMethod = LinkMovementMethod.getInstance()
 
-
-        // Inisialisasi Firebase Auth dan Firestore
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Login dengan Email
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
@@ -87,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
 
                     } else {
                         Toast.makeText(this, "Email belum diverifikasi. Silakan periksa email Anda.", Toast.LENGTH_SHORT).show()
-                        auth.signOut() // Logout user jika email belum diverifikasi
+                        auth.signOut()
                     }
                 } else {
                     Toast.makeText(this, "Login gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -103,40 +98,19 @@ class LoginActivity : AppCompatActivity() {
                     val age = document.getLong("age")?.toInt()
 
                     if (weight == 0 || age == 0) {
-                        // Data personalisasi belum lengkap, arahkan ke PersonalizeActivity
                         startActivity(Intent(this, PersonalizeActivity::class.java))
                     } else {
-                        // Data lengkap, lanjutkan ke HomeActivity
                         startActivity(Intent(this, HomeActivity::class.java))
                     }
                     finish()
                 } else {
-                    // Data pengguna belum ada, buat data baru di Firestore
-                    val userData = mapOf(
-                        "name" to (auth.currentUser?.displayName ?: "User"), // Gunakan displayName dari FirebaseAuth
-                        "email" to (auth.currentUser?.email ?: "Email tidak ditemukan"),
-                        "weight" to 0,
-                        "age" to 0,
-                        "tags" to mapOf(
-                            "pork" to false,
-                            "alcohol" to false
-                        )
-                    )
-
-                    firestore.collection("users").document(userId)
-                        .set(userData)
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, PersonalizeActivity::class.java))
-                            finish()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Gagal menyimpan data: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
+                    Toast.makeText(this, "Data pengguna tidak ditemukan. Hubungi admin.", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Gagal memeriksa data pengguna: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
 }
