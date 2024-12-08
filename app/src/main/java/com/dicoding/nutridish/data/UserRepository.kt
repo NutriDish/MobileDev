@@ -32,6 +32,10 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
+    suspend fun get_recipe(){
+        return apiService.
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: UserRepository? = null

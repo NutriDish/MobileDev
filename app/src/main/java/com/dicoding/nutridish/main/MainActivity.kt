@@ -44,8 +44,6 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Observing user session
-        // Observing user session
         viewModel.getSession().observe(this) { user ->
             if (user.isLogin) {
                 auth.signInWithEmailAndPassword(user.email, user.password)
@@ -74,7 +72,6 @@ class MainActivity : AppCompatActivity() {
                                         }
                                     }
                                     .addOnFailureListener {
-                                        // Handle Firestore failure
                                         showToast("Failed to retrieve user data.")
                                     }
                             }
@@ -98,13 +95,11 @@ class MainActivity : AppCompatActivity() {
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                // Pindah ke halaman RegisterActivity
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
         }
 
-        // Menentukan kata "Register" agar bisa diklik
         val startIndex = text.indexOf("Login")
         val endIndex = startIndex + "Login".length
         spannableString.setSpan(
@@ -115,18 +110,14 @@ class MainActivity : AppCompatActivity() {
         )
 
         textView.text = spannableString
-        textView.movementMethod = LinkMovementMethod.getInstance() // Untuk mengaktifkan klik
+        textView.movementMethod = LinkMovementMethod.getInstance()
 
-
-        // Navigating to SignUpActivity when register button is clicked
         binding.registerButton.setOnClickListener {
             val intent = Intent(this@MainActivity, SignUpActivity::class.java)
             startActivity(intent)
         }
     }
 
-
-    // Handle window appearance (hide status bar)
     fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -137,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.hide() // Hide the action bar
+        supportActionBar?.hide()
     }
 
     private fun showToast(message: String) {
