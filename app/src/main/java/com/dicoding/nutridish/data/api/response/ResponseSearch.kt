@@ -2,8 +2,7 @@ package com.dicoding.nutridish.data.api.response
 
 import com.google.gson.annotations.SerializedName
 
-data class Response(
-
+data class ApiResponse(
 	@field:SerializedName("Response")
 	val response: List<ResponseItem?>? = null
 )
