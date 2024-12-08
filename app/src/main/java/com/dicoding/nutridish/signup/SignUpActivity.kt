@@ -39,21 +39,18 @@ class SignUpActivity : AppCompatActivity() {
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                // Pindah ke halaman RegisterActivity
                 val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
         }
 
-        // Menentukan kata "Register" agar bisa diklik
         val startIndex = text.indexOf("Sign In")
         val endIndex = startIndex + "Sign In".length
         spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         textView.text = spannableString
-        textView.movementMethod = LinkMovementMethod.getInstance() // Untuk mengaktifkan klik
+        textView.movementMethod = LinkMovementMethod.getInstance()
 
-        // Inisialisasi Firebase Auth dan Firestore
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         val calendar = Calendar.getInstance()
@@ -62,12 +59,9 @@ class SignUpActivity : AppCompatActivity() {
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            // Tampilkan DatePickerDialog
             val datePickerDialog = DatePickerDialog(
                 this,
                 { _, selectedYear, selectedMonth, selectedDay ->
-                    // Update EditText dengan tanggal yang dipilih
                     val formattedDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
                     binding.dateEditTextLayout.setText(formattedDate)
                 },
@@ -78,14 +72,12 @@ class SignUpActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // Tombol sign up diklik
         binding.signupButton.setOnClickListener {
             val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
             val confirmPassword = binding.passwordconfirmEditText.text.toString()
 
-            // Validasi input
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                 Toast.makeText(this, "Semua field harus diisi", Toast.LENGTH_SHORT).show()
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -119,13 +111,34 @@ class SignUpActivity : AppCompatActivity() {
 
 
     private fun registerUser(name: String, email: String, password: String) {
+        val dateOfBirth = binding.dateEditTextLayout.text.toString()
+
+        if (TextUtils.isEmpty(dateOfBirth)) {
+            Toast.makeText(this, "Tanggal lahir harus diisi", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val dateParts = dateOfBirth.split("/")
+        val day = dateParts[0].toInt()
+        val month = dateParts[1].toInt() - 1
+        val year = dateParts[2].toInt()
+
+        val dobCalendar = Calendar.getInstance().apply {
+            set(year, month, day)
+        }
+
+        val today = Calendar.getInstance()
+        var age = today.get(Calendar.YEAR) - dobCalendar.get(Calendar.YEAR)
+        if (today.get(Calendar.DAY_OF_YEAR) < dobCalendar.get(Calendar.DAY_OF_YEAR)) {
+            age -= 1
+        }
+
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
                         if (emailTask.isSuccessful) {
-                            // Dapatkan auto-increment ID dan simpan data pengguna
                             getNextUserId { autoIncrementId ->
                                 if (autoIncrementId != null) {
                                     val userId = user.uid
@@ -133,15 +146,15 @@ class SignUpActivity : AppCompatActivity() {
                                         "id" to autoIncrementId,
                                         "name" to name,
                                         "email" to email,
+                                        "dateOfBirth" to dateOfBirth,
+                                        "age" to age,
                                         "weight" to 0,
-                                        "age" to 0,
                                         "tags" to mapOf(
                                             "pork" to false,
                                             "alcohol" to false
                                         )
                                     )
 
-                                    // Simpan data pengguna ke Firestore
                                     firestore.collection("users").document(userId)
                                         .set(userData)
                                         .addOnSuccessListener {
@@ -150,7 +163,7 @@ class SignUpActivity : AppCompatActivity() {
                                                 "Registrasi berhasil. Email verifikasi telah dikirim ke $email. Silakan verifikasi email Anda sebelum login.",
                                                 Toast.LENGTH_LONG
                                             ).show()
-                                            auth.signOut() // Logout setelah registrasi
+                                            auth.signOut()
                                             startActivity(Intent(this, LoginActivity::class.java))
                                             finish()
                                         }
@@ -178,5 +191,4 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
     }
-
 }

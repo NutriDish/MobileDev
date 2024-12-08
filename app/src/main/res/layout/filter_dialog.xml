@@ -1,134 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:fillViewport="true"
     android:padding="16dp">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/filterTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Filter Options"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <EditText
-        android:id="@+id/caloriesInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Calories"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/filterTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <EditText
-        android:id="@+id/proteinInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Protein"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/caloriesInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <EditText
-        android:id="@+id/fatInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Fat"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/proteinInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <EditText
-        android:id="@+id/sodiumInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Protein"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/fatInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <!-- Section: Waktu Makan -->
-    <TextView
-        android:id="@+id/booleanFiltersTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Waktu Makan"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/sodiumInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <CheckBox
-        android:id="@+id/filterBreakfast"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Breakfast"
-        app:layout_constraintTop_toBottomOf="@id/booleanFiltersTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <CheckBox
-        android:id="@+id/filterLunch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Lunch"
-        app:layout_constraintTop_toBottomOf="@id/filterBreakfast"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <CheckBox
-        android:id="@+id/filterdinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Dinner"
-        app:layout_constraintTop_toBottomOf="@id/filterLunch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Section: Jenis Makanan -->
-    <TextView
-        android:id="@+id/jenisMakananFiltersTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Jenis Makanan"
-        android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filterdinner" />
-
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/jenisMakananFiltersTitle"
-        tools:layout_editor_absoluteX="16dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/filterTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Filter Options"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/caloriesInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Calories"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filterTitle" />
+
+        <EditText
+            android:id="@+id/proteinInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Protein"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/caloriesInput" />
+
+        <EditText
+            android:id="@+id/fatInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Fat"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/proteinInput" />
+
+        <EditText
+            android:id="@+id/sodiumInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Protein"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fatInput" /><!-- Section: Waktu Makan -->
+        <TextView
+            android:id="@+id/booleanFiltersTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Waktu Makan"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sodiumInput" />
+
+        <CheckBox
+            android:id="@+id/filterBreakfast"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Breakfast"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/booleanFiltersTitle" />
+
+        <CheckBox
+            android:id="@+id/filterLunch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Lunch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filterBreakfast" />
+
+        <CheckBox
+            android:id="@+id/filterdinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Dinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filterLunch" />
+
+        <!-- Section: Jenis Makanan -->
+        <TextView
+            android:id="@+id/jenisMakananFiltersTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Jenis Makanan"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filterdinner" />
+
         <GridLayout
             android:id="@+id/gridLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="3"
+            android:padding="8dp"
             android:rowCount="4"
-            android:padding="8dp">
+            app:layout_constraintTop_toBottomOf="@+id/jenisMakananFiltersTitle">
 
             <CheckBox
                 android:id="@+id/filtersnack"
@@ -287,17 +287,78 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/filterlowsugar" />
         </GridLayout>
-    </ScrollView>
 
-    <!-- Button to Apply Filters -->
-    <Button
-        android:id="@+id/applyFiltersButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Apply"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scrollView2" />
+        <!-- Section: Season Makanan -->
+        <TextView
+            android:id="@+id/seasonFiltersTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Season Food"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gridLayout" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <GridLayout
+            android:id="@+id/gridLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:padding="8dp"
+            android:rowCount="4"
+            app:layout_constraintTop_toBottomOf="@+id/seasonFiltersTitle">
+
+            <CheckBox
+                android:id="@+id/filterwinter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Winter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/seasonFiltersTitle" />
+
+            <CheckBox
+                android:id="@+id/filterspring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spring"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterwinter" />
+
+            <CheckBox
+                android:id="@+id/filtersummer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Summer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterspring" />
+
+            <CheckBox
+                android:id="@+id/filterfall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fall"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filtersummer" />
+        </GridLayout>
+
+        <!-- Button to Apply Filters -->
+        <Button
+            android:id="@+id/applyFiltersButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="50dp"
+            android:text="Apply"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gridLayout2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

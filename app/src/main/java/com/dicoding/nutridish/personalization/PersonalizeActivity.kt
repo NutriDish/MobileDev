@@ -27,7 +27,7 @@ class PersonalizeActivity : AppCompatActivity() {
         val isFirstLogin = sharedPreferences.getBoolean("isFirstLogin", true)
 
         if (!isFirstLogin) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
             finish()
             return
         }
@@ -57,8 +57,10 @@ class PersonalizeActivity : AppCompatActivity() {
             val data = mapOf(
                 "age" to age,
                 "weight" to weight,
-                "tags.pork" to avoidPork,
-                "tags.alcohol" to avoidAlcohol
+                "tags" to mapOf(
+                    "pork" to avoidPork,
+                    "alcohol" to avoidAlcohol
+                )
             )
 
             firestore.collection("users").document(userId)
