@@ -169,7 +169,7 @@ class SignUpActivity : AppCompatActivity() {
                                         "weight" to 0,
                                         "temp" to null,
                                         "loc" to null,
-                                        "cons_alkohol" to 0,
+                                        "cons_alcohol" to 0,
                                         "cons_pork" to 0,
                                         "password" to 0
                                     )
