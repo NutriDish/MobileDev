@@ -59,10 +59,9 @@
                 android:id="@+id/favoriteButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/baseline_favorite_border_24"
                 android:contentDescription="TODO"
-                android:padding="8dp"
-                android:backgroundTint="@color/white" />
+                android:background="@color/transparent"
+                android:padding="8dp" />
         </LinearLayout>
 
         <!-- Dish Title -->
