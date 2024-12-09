@@ -28,6 +28,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.annotation.RequiresApi
 import com.dicoding.nutridish.notification.NotificationHelper
 import com.dicoding.nutridish.notification.NotificationReceiver
@@ -186,6 +187,18 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleMealNotifications() {
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        // Check if the app has permission to schedule exact alarms
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val canScheduleExactAlarms = alarmManager.canScheduleExactAlarms()
+            if (!canScheduleExactAlarms) {
+                // Request permission or show an alert
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+                return
+            }
+        }
+
         val notificationHelper = NotificationHelper(requireContext())
 
         val mealTimes = listOf(
@@ -204,7 +217,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 requireContext(),
                 hour,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // Ensure compatibility with Android 12 and later
             )
 
             val calendar = Calendar.getInstance().apply {
