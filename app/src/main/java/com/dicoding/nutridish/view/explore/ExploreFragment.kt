@@ -8,16 +8,15 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.SearchView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
+import com.dicoding.nutridish.databinding.FragmentExploreBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
@@ -27,39 +26,37 @@ class ExploreFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
     private lateinit var recipeAdapter: ExploreAdapter
-
+    private var _binding: FragmentExploreBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_explore, container, false)
-
-        // Find filter button
-        val filterButton: View = view.findViewById(R.id.filter)
-        filterButton.setOnClickListener {
-            showFilterDialog()
-        }
-
-        return view
+        _binding = FragmentExploreBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.filter.setOnClickListener {
+            showFilterDialog()
+        }
+
         // Initialize RecyclerView and Adapter
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewSearch)
-        recipeAdapter = ExploreAdapter()
-        recyclerView.apply {
-            layoutManager = GridLayoutManager(context,2)
+        recipeAdapter = ExploreAdapter { isLoading ->
+            viewModel.setLoading(isLoading)
+        }
+
+        binding.recyclerViewSearch.apply {
+            layoutManager = GridLayoutManager(context, 2)
             adapter = recipeAdapter
         }
 
-        searchRecipes("all")
 
-
-        val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.searchView)
-        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        // Setup SearchView
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { searchRecipes(it) }
                 return true
@@ -70,20 +67,28 @@ class ExploreFragment : Fragment() {
             }
         })
 
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            showLoading(isLoading)
+        }
+
         // Observe recipes LiveData
         viewModel.recipes.observe(viewLifecycleOwner) { recipes ->
             if (recipes != null) {
-                recipeAdapter.setRecipes(recipes.filterNotNull())
+                recipeAdapter.updateRecipes(recipes.filterNotNull())
             }
         }
+        // Search for all recipes
+        searchRecipes("all")
+
     }
 
     private fun searchRecipes(query: String) {
+        viewModel.setLoading(true) // Set loading true saat pencarian dimulai
         lifecycleScope.launch {
             viewModel.searchRecipes(query)
+            viewModel.setLoading(false) // Set loading false setelah pencarian selesai
         }
     }
-
 
     private fun showFilterDialog() {
         val bottomSheetDialog = BottomSheetDialog(requireContext())
@@ -109,10 +114,16 @@ class ExploreFragment : Fragment() {
             val isBreakfast = filterBreakfast.isChecked
             val isLunch = filterLunch.isChecked
 
+            // Set loading true before filtering
+            viewModel.setLoading(true)
+
             // Pass filters to filtering function
             filterRecipes(
                 calories, protein, isBreakfast, isLunch
             )
+
+            // After filtering is done
+            viewModel.setLoading(false)
 
             bottomSheetDialog.dismiss()
         }
@@ -126,5 +137,14 @@ class ExploreFragment : Fragment() {
     ) {
         // Implement logic to filter recipes based on the parameters
         // Example: send the filters to ViewModel or directly query the data source
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

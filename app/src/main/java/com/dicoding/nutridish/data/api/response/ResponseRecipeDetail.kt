@@ -1,26 +1,30 @@
 package com.dicoding.nutridish.data.api.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
+@Parcelize
 data class ResponseRecipeDetail(
 
 	@field:SerializedName("date")
 	val date: String? = null,
 
 	@field:SerializedName("sodium")
-	val sodium: Any? = null,
+	val sodium: @RawValue Any? = null,
 
 	@field:SerializedName("directions")
 	val directions: List<String?>? = null,
 
 	@field:SerializedName("protein")
-	val protein: Any? = null,
+	val protein: @RawValue Any? = null,
 
 	@field:SerializedName("fat")
-	val fat: Any? = null,
+	val fat: @RawValue Any? = null,
 
 	@field:SerializedName("rating")
-	val rating: Any? = null,
+	val rating: @RawValue Any? = null,
 
 	@field:SerializedName("description")
 	val description: String? = null,
@@ -29,11 +33,11 @@ data class ResponseRecipeDetail(
 	val ingredients: List<String?>? = null,
 
 	@field:SerializedName("calories")
-	val calories: Any? = null,
+	val calories: @RawValue Any? = null,
 
 	@field:SerializedName("categories")
 	val categories: List<String?>? = null,
 
 	@field:SerializedName("title")
 	val title: String? = null
-)
+) : Parcelable
