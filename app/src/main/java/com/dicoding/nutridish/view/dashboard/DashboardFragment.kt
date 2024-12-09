@@ -23,6 +23,15 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.*
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.dicoding.nutridish.notification.NotificationHelper
+import com.dicoding.nutridish.notification.NotificationReceiver
+
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
@@ -38,8 +47,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        scheduleMealNotifications()
 
         val textTime = view.findViewById<TextView>(R.id.textTime)
         val textTemperature = view.findViewById<TextView>(R.id.textTemperature)
@@ -169,5 +181,47 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onDestroyView() {
         super.onDestroyView()
         handler.removeCallbacks(runnable)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun scheduleMealNotifications() {
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationHelper = NotificationHelper(requireContext())
+
+        val mealTimes = listOf(
+            Pair(7, "Breakfast time! Don't forget to eat."),
+            Pair(13, "Lunch time! It's important to stay energized."),
+            Pair(19, "Dinner time! End your day with a good meal.")
+        )
+
+        for ((hour, message) in mealTimes) {
+            val intent = Intent(requireContext(), NotificationReceiver::class.java).apply {
+                putExtra("NOTIFICATION_TITLE", "Meal Reminder")
+                putExtra("NOTIFICATION_MESSAGE", message)
+            }
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                requireContext(),
+                hour,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val calendar = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, hour)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+            }
+
+            if (calendar.timeInMillis < System.currentTimeMillis()) {
+                calendar.add(Calendar.DAY_OF_YEAR, 1) // Schedule for the next day if time has passed
+            }
+
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        }
     }
 }
