@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
 
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
 
 
 }
