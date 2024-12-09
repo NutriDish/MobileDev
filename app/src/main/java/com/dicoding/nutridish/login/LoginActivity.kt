@@ -48,6 +48,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        binding.forgotpw.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
         val startIndex = text.indexOf("account")
         val endIndex = startIndex + "account".length
         spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -111,6 +116,5 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal memeriksa data pengguna: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
 
 }
