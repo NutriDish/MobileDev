@@ -76,7 +76,7 @@
                 android:id="@+id/textTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="29°C"
+                android:text="2°C"
                 android:textColor="@android:color/black"
                 android:textSize="48sp"
                 android:textStyle="bold"

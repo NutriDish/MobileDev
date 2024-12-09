@@ -26,7 +26,6 @@
                 android:id="@+id/textGreeting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/header_profile"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"

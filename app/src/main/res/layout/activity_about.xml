@@ -43,7 +43,7 @@
                     android:padding="8dp"
                     android:layout_gravity="start"
                     app:tint="@android:color/white"
-                    android:backgroundTint="@color/navy"
+                    android:backgroundTint="@color/transparent"
                     />
 
             </androidx.appcompat.widget.Toolbar>
