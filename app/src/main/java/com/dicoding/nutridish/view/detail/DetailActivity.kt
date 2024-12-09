@@ -99,7 +99,7 @@
                         binding.proteintext.text = data.protein?.toString() ?: "0"
                         binding.fattext.text = data.fat?.toString() ?: "0"
                         binding.sodiumtext.text = data.sodium?.toString() ?: "0"
-                        viewModel.checkBookmark(data.title.toString()).observe(this) { eventEntity ->
+                        viewModel.checkBookmark(data.title.toString().trim()).observe(this) { eventEntity ->
                             if (eventEntity != null) {
                                 binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_24)
                             } else {
