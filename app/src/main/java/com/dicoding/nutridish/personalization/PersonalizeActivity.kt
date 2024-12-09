@@ -34,7 +34,7 @@ class PersonalizeActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_personalize)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, AgeFragment())
+            .replace(R.id.fragment_container, WeightFragment())
             .commit()
     }
 
@@ -47,20 +47,20 @@ class PersonalizeActivity : AppCompatActivity() {
 
     fun completePersonalization() {
         val sharedPreferences = getSharedPreferences("Personalization", MODE_PRIVATE)
-        val age = sharedPreferences.getInt("age", 0)
         val weight = sharedPreferences.getInt("weight", 0)
         val avoidPork = sharedPreferences.getBoolean("avoidPork", false)
         val avoidAlcohol = sharedPreferences.getBoolean("avoidAlcohol", false)
 
+        val porkValue = if (avoidPork) 0 else 1
+        val alcoholValue = if (avoidAlcohol) 0 else 1
+
         val userId = auth.currentUser?.uid
         if (userId != null) {
+
             val data = mapOf(
-                "age" to age,
                 "weight" to weight,
-                "tags" to mapOf(
-                    "pork" to avoidPork,
-                    "alcohol" to avoidAlcohol
-                )
+                "cons_pork" to porkValue,
+                "cons_alcohol" to alcoholValue,
             )
 
             firestore.collection("users").document(userId)

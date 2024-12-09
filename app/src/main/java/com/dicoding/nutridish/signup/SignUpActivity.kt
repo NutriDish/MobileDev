@@ -19,6 +19,8 @@ import android.util.Patterns
 import android.app.DatePickerDialog
 import java.util.Calendar
 import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -109,16 +111,31 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-
     private fun registerUser(name: String, email: String, password: String) {
-        val dateOfBirth = binding.dateEditTextLayout.text.toString()
+        val dateOfBirthInput = binding.dateEditTextLayout.text.toString()
 
-        if (TextUtils.isEmpty(dateOfBirth)) {
+        if (TextUtils.isEmpty(dateOfBirthInput)) {
             Toast.makeText(this, "Tanggal lahir harus diisi", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val dateParts = dateOfBirth.split("/")
+        val dateFormatInput = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateFormatOutput = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormatReg = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+
+        val dateOfBirthFormatted: String
+        try {
+            val dateOfBirthDate = dateFormatInput.parse(dateOfBirthInput)
+            dateOfBirthFormatted = dateFormatOutput.format(dateOfBirthDate!!)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Format tanggal lahir tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val dateRegFormatted = dateFormatReg.format(System.currentTimeMillis())
+
+        // Perhitungan usia
+        val dateParts = dateOfBirthInput.split("/")
         val day = dateParts[0].toInt()
         val month = dateParts[1].toInt() - 1
         val year = dateParts[2].toInt()
@@ -143,16 +160,18 @@ class SignUpActivity : AppCompatActivity() {
                                 if (autoIncrementId != null) {
                                     val userId = user.uid
                                     val userData = mapOf(
-                                        "id" to autoIncrementId,
-                                        "name" to name,
+                                        "userId" to autoIncrementId,
+                                        "userName" to name,
                                         "email" to email,
-                                        "dateOfBirth" to dateOfBirth,
+                                        "dateBirth" to dateOfBirthFormatted,
+                                        "dateReg" to dateRegFormatted,
                                         "age" to age,
                                         "weight" to 0,
-                                        "tags" to mapOf(
-                                            "pork" to false,
-                                            "alcohol" to false
-                                        )
+                                        "temp" to null,
+                                        "loc" to null,
+                                        "cons_alcohol" to 0,
+                                        "cons_pork" to 0,
+                                        "password" to 0
                                     )
 
                                     firestore.collection("users").document(userId)

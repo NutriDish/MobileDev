@@ -97,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
                     val weight = document.getLong("weight")?.toInt()
                     val age = document.getLong("age")?.toInt()
 
-                    if (weight == 0 || age == 0) {
+                    if (weight == 0 || weight == null) {
                         startActivity(Intent(this, PersonalizeActivity::class.java))
                     } else {
                         startActivity(Intent(this, HomeActivity::class.java))

@@ -80,11 +80,13 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
 
+
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.cardview)
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 
 
 
