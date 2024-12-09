@@ -68,7 +68,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 .get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
-                        val name = document.getString("name") ?: "User"
+                        val name = document.getString("userName") ?: "User"
                         textGreeting.text = "Hi, $name"
                     } else {
                         textGreeting.text = "Hi, User"
