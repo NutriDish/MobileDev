@@ -54,7 +54,7 @@ class ProfileFragment : Fragment() {
                     }
 
                     if (snapshot != null && snapshot.exists()) {
-                        val name = snapshot.getString("name") ?: "Unknown"
+                        val name = snapshot.getString("userName") ?: "Unknown"
                         val email = snapshot.getString("email") ?: "Unknown"
 
                         // Update UI
