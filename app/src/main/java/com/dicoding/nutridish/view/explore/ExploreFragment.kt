@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.nutridish.R
@@ -47,10 +48,10 @@ class ExploreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize RecyclerView and Adapter
-        val recyclerView: RecyclerView = view.findViewById(R.id.weeklyRecyclerView)
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewSearch)
         recipeAdapter = ExploreAdapter()
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context,2)
             adapter = recipeAdapter
         }
 
@@ -72,7 +73,7 @@ class ExploreFragment : Fragment() {
         // Observe recipes LiveData
         viewModel.recipes.observe(viewLifecycleOwner) { recipes ->
             if (recipes != null) {
-                recipeAdapter.setRecipes(recipes.filterNotNull()) // Update RecyclerView
+                recipeAdapter.setRecipes(recipes.filterNotNull())
             }
         }
     }
