@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.databinding.FragmentFavoriteBinding
-import com.dicoding.nutridish.data.api.response.ListEventsItem
+import com.dicoding.nutridish.data.api.response.ResponseItem
 
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding
-    private lateinit var favoriteAdapter: EventAdapter
-    private var dataList: List<ListEventsItem> = emptyList() // Simulasikan data di sini
+    private lateinit var favoriteAdapter: FavoriteAdapter
+    private var dataList: List<ResponseItem> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +31,31 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favoriteAdapter = EventAdapter()
+
+
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        val viewModel: FavoriteViewModel by viewModels {
+            factory
+        }
+        // Setup Adapter
+        favoriteAdapter = FavoriteAdapter()
+
+        // Mengamati LiveData dari ViewModel
+        viewModel.favoriteNutri.observe(viewLifecycleOwner) { favoriteList ->
+            if (favoriteList != null){
+                val items = arrayListOf<ResponseItem>()
+                favoriteList.map {
+                    val item = ResponseItem(
+                        title = it.title,
+                    )
+                    items.add(item)
+                }
+                favoriteAdapter.submitList(items)
+
+            }
+
+        }
+
 
         // Setup RecyclerView
         binding?.recyclerView?.apply {
@@ -38,8 +64,6 @@ class FavoriteFragment : Fragment() {
             adapter = favoriteAdapter
         }
 
-        // Check if dataList is empty
-        updateUI()
 
         // Setup SearchView
         binding?.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -49,7 +73,7 @@ class FavoriteFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filteredList = if (!newText.isNullOrEmpty()) {
-                    dataList.filter { it.name.contains(newText, ignoreCase = true) }
+                    dataList.filter { it.title?.contains(newText, ignoreCase = true) ?: false  }
                 } else {
                     dataList
                 }
@@ -63,7 +87,7 @@ class FavoriteFragment : Fragment() {
     private fun updateUI(isEmpty: Boolean = dataList.isEmpty()) {
         if (isEmpty) {
             binding?.recyclerView?.visibility = View.GONE
-            binding?.tvEmpty?.visibility = View.VISIBLE // Pastikan TextView tvEmpty sudah ada di layout
+            binding?.tvEmpty?.visibility = View.VISIBLE
         } else {
             binding?.recyclerView?.visibility = View.VISIBLE
             binding?.tvEmpty?.visibility = View.GONE

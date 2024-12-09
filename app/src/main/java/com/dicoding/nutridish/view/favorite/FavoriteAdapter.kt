@@ -8,21 +8,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.nutridish.data.api.response.ListEventsItem
+import com.dicoding.nutridish.data.api.response.ResponseItem
 import com.dicoding.nutridish.databinding.ItemFavoriteBinding
 import com.dicoding.nutridish.view.detail.DetailActivity
 
-class EventAdapter(
+class FavoriteAdapter(
 
-) : ListAdapter<ListEventsItem, EventAdapter.MyViewHolder>(DIFF_CALLBACK) {
+) : ListAdapter<ResponseItem, FavoriteAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListEventsItem>() {
-            override fun areItemsTheSame(oldItem: ListEventsItem, newItem: ListEventsItem): Boolean {
-                return oldItem == newItem
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResponseItem>() {
+            override fun areItemsTheSame(oldItem: ResponseItem, newItem: ResponseItem): Boolean {
+                return oldItem.title == newItem.title
             }
 
-            override fun areContentsTheSame(oldItem: ListEventsItem, newItem: ListEventsItem): Boolean {
+            override fun areContentsTheSame(oldItem: ResponseItem, newItem: ResponseItem): Boolean {
                 return oldItem == newItem
             }
         }
@@ -30,13 +30,12 @@ class EventAdapter(
 
     class MyViewHolder(private val binding: ItemFavoriteBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(event: ListEventsItem) {
-            binding.tvItemName.text = event.name
-            Glide.with(binding.imgItemPhoto.context)
-                .load(event.mediaCover)
-                .into(binding.imgItemPhoto)
-
-            val itemDataList = "event_data_list"
+        fun bind(event: ResponseItem) {
+            binding.tvItemName.text = event.title
+//            Glide.with(binding.imgItemPhoto.context)
+//                .load(event.mediaCover)
+//                .into(binding.imgItemPhoto)
+            val itemDataList = "recipe_data_list"
             binding.cardView.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, DetailActivity::class.java)
