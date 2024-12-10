@@ -326,7 +326,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ewe wwewwewwewewe wewew"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -362,7 +362,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ewe wwewwewwewewe wewew"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -382,15 +382,20 @@
             app:layout_constraintTop_toBottomOf="@id/ingredientsList" />
 
         <!-- Ingredients List -->
+
         <LinearLayout
             android:id="@+id/instructionsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/instructionsTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/instructionsTitle"
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
                 android:id="@+id/instructionsText"
@@ -398,9 +403,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ewe wwewwewwewewe wewew"
-                android:textSize="16sp"
-                android:textColor="@color/black" />
+                android:layout_marginBottom="20dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
