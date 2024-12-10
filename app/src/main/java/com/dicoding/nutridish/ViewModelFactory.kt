@@ -11,6 +11,7 @@ import com.dicoding.nutridish.data.pref.dataStore
 import com.dicoding.nutridish.di.Injection
 import com.dicoding.nutridish.login.LoginViewModel
 import com.dicoding.nutridish.main.MainViewModel
+import com.dicoding.nutridish.view.dashboard.DashboardViewModel
 import com.dicoding.nutridish.view.detail.DetailViewModel
 import com.dicoding.nutridish.view.explore.ExploreViewModel
 import com.dicoding.nutridish.view.favorite.FavoriteViewModel
@@ -40,6 +41,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
                 FavoriteViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(DashboardViewModel::class.java) -> {
+                DashboardViewModel(userRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
