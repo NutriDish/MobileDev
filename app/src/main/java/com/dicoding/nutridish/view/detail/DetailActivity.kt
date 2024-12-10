@@ -43,6 +43,9 @@
             val factory = ViewModelFactory.getInstance(this)
             viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
+            binding.backButton.setOnClickListener {
+                finish()
+            }
 
             val nutriItem: ResponseItem? = intent.getParcelableExtra(data)
 
