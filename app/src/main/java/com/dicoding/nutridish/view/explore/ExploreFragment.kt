@@ -1,5 +1,7 @@
 package com.dicoding.nutridish.view.explore
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.databinding.FragmentExploreBinding
+import com.dicoding.nutridish.view.explore.upload.UploadImageActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
@@ -42,6 +45,10 @@ class ExploreFragment : Fragment() {
 
         binding.filter.setOnClickListener {
             showFilterDialog()
+        }
+
+        binding.capture.setOnClickListener {
+            showImageActivity()
         }
 
         recipeAdapter = ExploreAdapter { isLoading ->
@@ -73,6 +80,31 @@ class ExploreFragment : Fragment() {
         searchRecipes("")
 
     }
+
+    private fun showImageActivity() {
+        // Create the dialog
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirmation")
+        builder.setMessage("Do you want to use the image classification based on ingredients feature?")
+
+        // Set up the "Yes" button
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            dialog.dismiss()
+            // Navigate to UploadImageActivity
+            val intent = Intent(requireContext(), UploadImageActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Set up the "No" button
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss() // Close the dialog
+        }
+
+        // Show the dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
     private fun showFilterDialog() {
         val dialogView = layoutInflater.inflate(R.layout.filter_dialog, null)

@@ -53,5 +53,9 @@
     <string name="title_about_page">About App</string>
     <string name="change_data">Change Data</string>
     <string name="enter_new_name">Enter New Name</string>
+    <string name="upload">upload</string>
+    <string name="file_upload_text">Upload or Take a picture to use this image classification feature based on ingredients</string>
+    <string name="camera">camera</string>
+    <string name="gallery">gallery</string>
 
 </resources>
