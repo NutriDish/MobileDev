@@ -83,21 +83,20 @@ class DashboardFragment : Fragment() {
 
     private fun setupGreeting() {
         val currentUser = auth.currentUser
-        binding.textGreeting.text = if (currentUser != null) {
+        if (currentUser != null) {
             val userId = currentUser.uid
             firestore.collection("users").document(userId)
                 .get()
                 .addOnSuccessListener { document ->
-                    document?.getString("userName")?.let {
-                        "Hi, $it"
-                    } ?: "Hi, User"
+                    val userName = document?.getString("userName") ?: "User"
+                    binding.textGreeting.text = "Hi, $userName"
                 }
                 .addOnFailureListener {
                     Toast.makeText(requireContext(), "Gagal memuat data pengguna.", Toast.LENGTH_SHORT).show()
+                    binding.textGreeting.text = "Hi, User"
                 }
-            "Hi, Guest"
         } else {
-            "Hi, Guest"
+            binding.textGreeting.text = "Hi, Guest"
         }
     }
 
