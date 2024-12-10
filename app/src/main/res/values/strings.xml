@@ -51,5 +51,7 @@
     <string name="creator_7">David Black</string>
     <string name="version">Version: 1.0.0</string>
     <string name="title_about_page">About App</string>
+    <string name="change_data">Change Data</string>
+    <string name="enter_new_name">Enter New Name</string>
 
 </resources>
