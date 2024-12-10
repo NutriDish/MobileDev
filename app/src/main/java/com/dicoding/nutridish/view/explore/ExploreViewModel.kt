@@ -6,12 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.nutridish.data.UserRepository
 import com.dicoding.nutridish.data.api.response.ResponseItem
-import com.dicoding.nutridish.data.api.retrofit.ApiConfig
-import com.dicoding.nutridish.data.api.retrofit.ApiService
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ExploreViewModel(private val repository: UserRepository) : ViewModel() {
 
@@ -21,15 +16,19 @@ class ExploreViewModel(private val repository: UserRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun searchRecipes(query: String) {
+    fun searchRecipes(query: String, filters: String? = null) {
         setLoading(true)
         viewModelScope.launch {
-            val result = repository.searchRecipes(query)
-            _recipes.postValue(result)
-            setLoading(false)
+            try {
+                val result = repository.searchRecipes(query, filters)
+                _recipes.postValue(result)
+            } catch (e: Exception) {
+                _recipes.postValue(emptyList())
+            } finally {
+                setLoading(false)
+            }
         }
     }
-
 
     fun setLoading(isLoading: Boolean) {
         _isLoading.value = isLoading

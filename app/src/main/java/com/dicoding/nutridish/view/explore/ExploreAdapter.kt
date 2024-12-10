@@ -22,7 +22,7 @@ class ExploreAdapter(
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResponseItem>() {
             override fun areItemsTheSame(oldItem: ResponseItem, newItem: ResponseItem): Boolean {
-                return oldItem.title == newItem.title // Sesuaikan dengan ID unik
+                return oldItem.title == newItem.title
             }
 
             override fun areContentsTheSame(oldItem: ResponseItem, newItem: ResponseItem): Boolean {
@@ -59,17 +59,14 @@ class ExploreAdapter(
             onLoading(true)
             binding.textFoodName.text = recipe.title
 
-            // Kosongkan GridLayout sebelum menambahkan item baru
             binding.iconGrid.removeAllViews()
 
-            // Ambil properti dietary
             recipe.dietary?.let { dietary ->
                 dietaryIconMap.forEach { (key, value) ->
-                    // Ambil nilai properti menggunakan refleksi
                     val isIncluded = try {
                         dietary.javaClass.getDeclaredField(key).let { field ->
                             field.isAccessible = true
-                            (field.get(dietary) as? Int) == 1 // Ubah dari Int? ke Boolean
+                            (field.get(dietary) as? Int) == 1
                         }
                     } catch (e: NoSuchFieldException) {
                         false
@@ -78,7 +75,6 @@ class ExploreAdapter(
                     if (isIncluded) {
                         val (iconRes, label) = value
 
-                        // Buat LinearLayout horizontal untuk ikon dan teks
                         val horizontalLayout = LinearLayout(binding.root.context).apply {
                             orientation = LinearLayout.HORIZONTAL
                             layoutParams = GridLayout.LayoutParams().apply {
@@ -92,32 +88,27 @@ class ExploreAdapter(
                         val imageView = ImageView(binding.root.context).apply {
                             setImageResource(iconRes)
 
-                            // Mengatur ukuran ikon menjadi 25x25 dp
-                            val sizeInDp = 20 // Ukuran dalam dp
-                            val density = resources.displayMetrics.density // Konversi dp ke px
+                            val sizeInDp = 20
+                            val density = resources.displayMetrics.density
                             val sizeInPx = (sizeInDp * density).toInt()
 
                             layoutParams = LinearLayout.LayoutParams(sizeInPx, sizeInPx)
                         }
 
-                        // Tambahkan teks
                         val textView = TextView(binding.root.context).apply {
                             text = label
                             textSize = 10f
                             setPadding(8, 5, 0, 0)
                         }
 
-                        // Tambahkan ikon dan teks ke LinearLayout
                         horizontalLayout.addView(imageView)
                         horizontalLayout.addView(textView)
 
-                        // Tambahkan LinearLayout ke GridLayout
                         binding.iconGrid.addView(horizontalLayout)
                     }
                 }
             }
 
-            // **Tambahkan Ikon "Healthy" untuk Semua Resep**
             val healthyLayout = LinearLayout(binding.root.context).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = GridLayout.LayoutParams().apply {
@@ -131,7 +122,6 @@ class ExploreAdapter(
             val healthyIcon = ImageView(binding.root.context).apply {
                 setImageResource(R.drawable.healthy_diet)
 
-                // Mengatur ukuran ikon menjadi 25x25 dp
                 val sizeInDp = 20
                 val density = resources.displayMetrics.density
                 val sizeInPx = (sizeInDp * density).toInt()
@@ -148,10 +138,8 @@ class ExploreAdapter(
             healthyLayout.addView(healthyIcon)
             healthyLayout.addView(healthyText)
 
-            // Tambahkan ke GridLayout
             binding.iconGrid.addView(healthyLayout)
 
-            // Navigasi ke Detail
             binding.cardView.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, DetailActivity::class.java)

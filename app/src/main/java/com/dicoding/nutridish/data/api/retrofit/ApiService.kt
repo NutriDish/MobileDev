@@ -33,7 +33,8 @@ interface ApiService {
 
     @GET("recipes/search")
     suspend fun searchRecipes(
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("filters") filters: String? = null
     ): Response<List<ResponseItem>>
 
     @GET("recipe_details/{title}/")
@@ -41,6 +42,4 @@ interface ApiService {
         @Path("title") title: String
     ): Response<ResponseRecipeDetail>
 
-
-    // recipes/search?query=
 }
