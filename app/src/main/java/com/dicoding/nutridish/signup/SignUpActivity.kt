@@ -134,7 +134,6 @@ class SignUpActivity : AppCompatActivity() {
 
         val dateRegFormatted = dateFormatReg.format(System.currentTimeMillis())
 
-        // Perhitungan usia
         val dateParts = dateOfBirthInput.split("/")
         val day = dateParts[0].toInt()
         val month = dateParts[1].toInt() - 1
