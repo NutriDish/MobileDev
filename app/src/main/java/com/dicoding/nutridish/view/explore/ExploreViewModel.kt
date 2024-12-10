@@ -6,12 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.nutridish.data.UserRepository
 import com.dicoding.nutridish.data.api.response.ResponseItem
-import com.dicoding.nutridish.data.api.retrofit.ApiConfig
-import com.dicoding.nutridish.data.api.retrofit.ApiService
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ExploreViewModel(private val repository: UserRepository) : ViewModel() {
 

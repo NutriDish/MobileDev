@@ -56,9 +56,9 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
-    suspend fun searchRecipes(query: String): List<ResponseItem?>? {
+    suspend fun searchRecipes(query: String, filters: String?): List<ResponseItem?>? {
         return try {
-            val response = apiService.searchRecipes(query)
+            val response = apiService.searchRecipes(query, filters)
             if (response.isSuccessful) {
                 response.body()
             } else {
