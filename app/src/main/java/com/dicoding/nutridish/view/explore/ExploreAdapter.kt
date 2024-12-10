@@ -1,13 +1,15 @@
 package com.dicoding.nutridish.view.explore
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.GridLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.data.api.response.ResponseItem
 import com.dicoding.nutridish.databinding.ItemRecentlyAddedBinding
@@ -36,24 +38,129 @@ class ExploreAdapter(
     class RecipeViewHolder(private val binding: ItemRecentlyAddedBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val dietaryIconMap = mapOf(
+            "vegetarian" to Pair(R.drawable.salad, "Vegetarian"),
+            "vegan" to Pair(R.drawable.vegan, "Vegan"),
+            "soy free" to Pair(R.drawable.soy_free, "Soy Free"),
+            "peanut free" to Pair(R.drawable.peanut_free, "Peanut Free"),
+            "wheat free" to Pair(R.drawable.no_wheat, "Wheat Free"),
+            "pescatarian" to Pair(R.drawable.fish, "Pescatarian"),
+            "dairy free" to Pair(R.drawable.dairy_free, "Dairy Free"),
+            "paleo" to Pair(R.drawable.paleo, "Paleo"),
+            "low cal" to Pair(R.drawable.low_calorie, "Low Cal"),
+            "low cholesterol" to Pair(R.drawable.ldl, "Low Cholesterol"),
+            "low fat" to Pair(R.drawable.no_fat, "Low Fat"),
+            "low carb" to Pair(R.drawable.ldl, "Low Carb"),
+            "low sodium" to Pair(R.drawable.sodium, "Low Sodium"),
+            "fat free" to Pair(R.drawable.no_fat_, "Fat Free")
+        )
+
         fun bind(recipe: ResponseItem, onLoading: (Boolean) -> Unit) {
             onLoading(true)
             binding.textFoodName.text = recipe.title
-//            Glide.with(binding.imageFood.context)
-//                .load(recipe.imageUrl)
-//                .placeholder(R.drawable.placeholder_image) // Gambar placeholder
-//                .error(R.drawable.error_image) // Gambar error
-//                .into(binding.imageFood)
-            binding.cardView.setOnClickListener {
 
+            // Kosongkan GridLayout sebelum menambahkan item baru
+            binding.iconGrid.removeAllViews()
+
+            // Ambil properti dietary
+            recipe.dietary?.let { dietary ->
+                dietaryIconMap.forEach { (key, value) ->
+                    // Ambil nilai properti menggunakan refleksi
+                    val isIncluded = try {
+                        dietary.javaClass.getDeclaredField(key).let { field ->
+                            field.isAccessible = true
+                            (field.get(dietary) as? Int) == 1 // Ubah dari Int? ke Boolean
+                        }
+                    } catch (e: NoSuchFieldException) {
+                        false
+                    }
+
+                    if (isIncluded) {
+                        val (iconRes, label) = value
+
+                        // Buat LinearLayout horizontal untuk ikon dan teks
+                        val horizontalLayout = LinearLayout(binding.root.context).apply {
+                            orientation = LinearLayout.HORIZONTAL
+                            layoutParams = GridLayout.LayoutParams().apply {
+                                width = GridLayout.LayoutParams.WRAP_CONTENT
+                                height = GridLayout.LayoutParams.WRAP_CONTENT
+                                marginEnd = 16
+                                bottomMargin = 16
+                            }
+                        }
+
+                        val imageView = ImageView(binding.root.context).apply {
+                            setImageResource(iconRes)
+
+                            // Mengatur ukuran ikon menjadi 25x25 dp
+                            val sizeInDp = 20 // Ukuran dalam dp
+                            val density = resources.displayMetrics.density // Konversi dp ke px
+                            val sizeInPx = (sizeInDp * density).toInt()
+
+                            layoutParams = LinearLayout.LayoutParams(sizeInPx, sizeInPx)
+                        }
+
+                        // Tambahkan teks
+                        val textView = TextView(binding.root.context).apply {
+                            text = label
+                            textSize = 10f
+                            setPadding(8, 5, 0, 0)
+                        }
+
+                        // Tambahkan ikon dan teks ke LinearLayout
+                        horizontalLayout.addView(imageView)
+                        horizontalLayout.addView(textView)
+
+                        // Tambahkan LinearLayout ke GridLayout
+                        binding.iconGrid.addView(horizontalLayout)
+                    }
+                }
+            }
+
+            // **Tambahkan Ikon "Healthy" untuk Semua Resep**
+            val healthyLayout = LinearLayout(binding.root.context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = GridLayout.LayoutParams().apply {
+                    width = GridLayout.LayoutParams.WRAP_CONTENT
+                    height = GridLayout.LayoutParams.WRAP_CONTENT
+                    marginEnd = 16
+                    bottomMargin = 16
+                }
+            }
+
+            val healthyIcon = ImageView(binding.root.context).apply {
+                setImageResource(R.drawable.healthy_diet)
+
+                // Mengatur ukuran ikon menjadi 25x25 dp
+                val sizeInDp = 20
+                val density = resources.displayMetrics.density
+                val sizeInPx = (sizeInDp * density).toInt()
+
+                layoutParams = LinearLayout.LayoutParams(sizeInPx, sizeInPx)
+            }
+
+            val healthyText = TextView(binding.root.context).apply {
+                text = "Healthy"
+                textSize = 10f
+                setPadding(8, 5, 0, 0)
+            }
+
+            healthyLayout.addView(healthyIcon)
+            healthyLayout.addView(healthyText)
+
+            // Tambahkan ke GridLayout
+            binding.iconGrid.addView(healthyLayout)
+
+            // Navigasi ke Detail
+            binding.cardView.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, DetailActivity::class.java)
                 intent.putExtra("recipe_data_list", recipe)
                 context.startActivity(intent)
-
             }
             onLoading(false)
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
