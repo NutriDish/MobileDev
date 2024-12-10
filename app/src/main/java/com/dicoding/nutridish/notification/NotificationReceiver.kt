@@ -15,4 +15,13 @@ class NotificationReceiver : BroadcastReceiver() {
         val notificationHelper = NotificationHelper(context)
         notificationHelper.showNotification(0, title, message)
     }
+
+    companion object {
+        fun createIntent(context: Context, title: String, message: String): Intent {
+            return Intent(context, NotificationReceiver::class.java).apply {
+                putExtra("NOTIFICATION_TITLE", title)
+                putExtra("NOTIFICATION_MESSAGE", message)
+            }
+        }
+    }
 }
