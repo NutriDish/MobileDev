@@ -44,7 +44,6 @@ class ExploreFragment : Fragment() {
             showFilterDialog()
         }
 
-        // Initialize RecyclerView and Adapter
         recipeAdapter = ExploreAdapter { isLoading ->
             viewModel.setLoading(isLoading)
         }
@@ -54,8 +53,6 @@ class ExploreFragment : Fragment() {
             adapter = recipeAdapter
         }
 
-
-        // Setup SearchView
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { searchRecipes(it) }
@@ -65,86 +62,89 @@ class ExploreFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
-        })
-
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            showLoading(isLoading)
         }
+        )
 
-        // Observe recipes LiveData
         viewModel.recipes.observe(viewLifecycleOwner) { recipes ->
             if (recipes != null) {
                 recipeAdapter.updateRecipes(recipes.filterNotNull())
             }
         }
-        // Search for all recipes
-        searchRecipes("all")
+        searchRecipes("")
 
-    }
-
-    private fun searchRecipes(query: String) {
-        viewModel.setLoading(true) // Set loading true saat pencarian dimulai
-        lifecycleScope.launch {
-            viewModel.searchRecipes(query)
-            viewModel.setLoading(false) // Set loading false setelah pencarian selesai
-        }
     }
 
     private fun showFilterDialog() {
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.filter_dialog, null)
-        bottomSheetDialog.setContentView(dialogView)
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(dialogView)
 
-        // Float filters
-        val caloriesInput = dialogView.findViewById<EditText>(R.id.caloriesInput)
-        val proteinInput = dialogView.findViewById<EditText>(R.id.proteinInput)
+        val breakfastCheckBox = dialogView.findViewById<CheckBox>(R.id.filterBreakfast)
+        val lunchCheckBox = dialogView.findViewById<CheckBox>(R.id.filterLunch)
+        val dinnerCheckBox = dialogView.findViewById<CheckBox>(R.id.filterdinner)
 
-        // Boolean filters
-        val filterBreakfast = dialogView.findViewById<CheckBox>(R.id.filterBreakfast)
-        val filterLunch = dialogView.findViewById<CheckBox>(R.id.filterLunch)
+        val snackcheckbox = dialogView.findViewById<CheckBox>(R.id.filtersnack)
+        val desertcheckbox = dialogView.findViewById<CheckBox>(R.id.filterdesert)
+        val vegetariancheckbox = dialogView.findViewById<CheckBox>(R.id.filtervegetarian)
+        val vegancheckbox = dialogView.findViewById<CheckBox>(R.id.filtervegan)
+        val glutenfreecheckbox = dialogView.findViewById<CheckBox>(R.id.filterglutenfree)
+        val dairyfreecheckbox = dialogView.findViewById<CheckBox>(R.id.filterdairyfree)
+        val pescatariancheckbox = dialogView.findViewById<CheckBox>(R.id.filterpescatarian)
+        val paleocheckbox = dialogView.findViewById<CheckBox>(R.id.filterpaleo)
+        val peanutfreecheckbox = dialogView.findViewById<CheckBox>(R.id.filterpeanutfree)
+        val soyfreecheckbox = dialogView.findViewById<CheckBox>(R.id.filtersoyfree)
+        val lowcaloriecheckbox = dialogView.findViewById<CheckBox>(R.id.filterlowcal)
+        val lowcholesterolcheckbox = dialogView.findViewById<CheckBox>(R.id.filterlowcholesterol)
+        val lowfatcheckbox = dialogView.findViewById<CheckBox>(R.id.filterlowfat)
+        val lowcarbcheckbox = dialogView.findViewById<CheckBox>(R.id.filterlowcarb)
+        val lowsodiumcheckbox = dialogView.findViewById<CheckBox>(R.id.filterlowsodium)
+        val fatfreecheckbox = dialogView.findViewById<CheckBox>(R.id.filterfatfree)
+        val lowsugarcheckbox = dialogView.findViewById<CheckBox>(R.id.filterlowsugar)
 
-        // Apply button
-        val applyFiltersButton = dialogView.findViewById<Button>(R.id.applyFiltersButton)
-        applyFiltersButton.setOnClickListener {
-            // Collect float filters
-            val calories = caloriesInput.text.toString().toFloatOrNull() ?: 0f
-            val protein = proteinInput.text.toString().toFloatOrNull() ?: 0f
+        val applyButton = dialogView.findViewById<Button>(R.id.applyFiltersButton)
 
-            // Collect boolean filters
-            val isBreakfast = filterBreakfast.isChecked
-            val isLunch = filterLunch.isChecked
+        applyButton.setOnClickListener {
 
-            // Set loading true before filtering
-            viewModel.setLoading(true)
+            val selectedFilters = mutableListOf<String>()
+            if (breakfastCheckBox.isChecked) selectedFilters.add("breakfast")
+            if (lunchCheckBox.isChecked) selectedFilters.add("lunch")
+            if (dinnerCheckBox.isChecked) selectedFilters.add("dinner")
 
-            // Pass filters to filtering function
-            filterRecipes(
-                calories, protein, isBreakfast, isLunch
-            )
+            if (snackcheckbox.isChecked) selectedFilters.add("snack")
+            if (desertcheckbox.isChecked) selectedFilters.add("desert")
+            if (vegetariancheckbox.isChecked) selectedFilters.add("vegetarian")
+            if (vegancheckbox.isChecked) selectedFilters.add("vegan")
+            if (glutenfreecheckbox.isChecked) selectedFilters.add("gluten free")
+            if (dairyfreecheckbox.isChecked) selectedFilters.add("dairy free")
+            if (pescatariancheckbox.isChecked) selectedFilters.add("pescatarian")
+            if (paleocheckbox.isChecked) selectedFilters.add("paleo")
+            if (peanutfreecheckbox.isChecked) selectedFilters.add("peanut free")
+            if (soyfreecheckbox.isChecked) selectedFilters.add("soy free")
+            if (lowcaloriecheckbox.isChecked) selectedFilters.add("low cal")
+            if (lowcholesterolcheckbox.isChecked) selectedFilters.add("low cholesterol")
+            if (lowfatcheckbox.isChecked) selectedFilters.add("low fat")
+            if (lowcarbcheckbox.isChecked) selectedFilters.add("low carb")
+            if (lowsodiumcheckbox.isChecked) selectedFilters.add("low sodium")
+            if (fatfreecheckbox.isChecked) selectedFilters.add("fat free")
+            if (lowsugarcheckbox.isChecked) selectedFilters.add("low sugar")
 
-            // After filtering is done
-            viewModel.setLoading(false)
+            val filterQuery = selectedFilters.joinToString(",")
+            dialog.dismiss()
 
-            bottomSheetDialog.dismiss()
+            val query = binding.searchView.query.toString()
+
+            searchRecipes(query, if (selectedFilters.isNotEmpty()) filterQuery else null)
         }
 
-        bottomSheetDialog.show()
+        dialog.show()
     }
 
-    private fun filterRecipes(
-        calories: Float, protein: Float, isBreakfast: Boolean,
-        isLunch: Boolean
-    ) {
-        // Implement logic to filter recipes based on the parameters
-        // Example: send the filters to ViewModel or directly query the data source
+    private fun searchRecipes(query: String, filters: String? = null) {
+        viewModel.setLoading(true)
+        lifecycleScope.launch {
+            viewModel.searchRecipes(query, filters)
+            viewModel.setLoading(false)
+        }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

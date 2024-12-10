@@ -21,15 +21,19 @@ class ExploreViewModel(private val repository: UserRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun searchRecipes(query: String) {
+    fun searchRecipes(query: String, filters: String? = null) {
         setLoading(true)
         viewModelScope.launch {
-            val result = repository.searchRecipes(query)
-            _recipes.postValue(result)
-            setLoading(false)
+            try {
+                val result = repository.searchRecipes(query, filters)
+                _recipes.postValue(result)
+            } catch (e: Exception) {
+                _recipes.postValue(emptyList())
+            } finally {
+                setLoading(false)
+            }
         }
     }
-
 
     fun setLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
