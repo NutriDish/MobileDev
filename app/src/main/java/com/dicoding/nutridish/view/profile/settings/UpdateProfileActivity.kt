@@ -1,18 +1,10 @@
 package com.dicoding.nutridish.view.profile.settings
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.dicoding.nutridish.R
-import com.dicoding.nutridish.databinding.ActivitySignUpBinding
 import com.dicoding.nutridish.databinding.ActivityUpdateProfileBinding
-import com.dicoding.nutridish.login.LoginActivity
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,7 +50,7 @@ class UpdateProfileActivity : AppCompatActivity() {
             val dateOfBirth = binding.dateEditTextLayout.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            if (validateInputs(userName, dateOfBirth, password)) {
+            if (validateInputs(password)) { // Hanya password yang divalidasi
                 updateUserData(userName, dateOfBirth, password)
             }
         }
@@ -69,15 +61,7 @@ class UpdateProfileActivity : AppCompatActivity() {
 
     }
 
-    private fun validateInputs(name: String, dob: String, password: String): Boolean {
-        if (name.isBlank()) {
-            Toast.makeText(this, "Nama tidak boleh kosong", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (dob.isBlank()) {
-            Toast.makeText(this, "Tanggal lahir tidak boleh kosong", Toast.LENGTH_SHORT).show()
-            return false
-        }
+    private fun validateInputs(password: String): Boolean {
         if (password.isBlank()) {
             Toast.makeText(this, "Password tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return false
@@ -116,17 +100,10 @@ class UpdateProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUserData(name: String, dobInput: String, password: String) {
+    private fun updateUserData(name: String?, dobInput: String?, password: String) {
         val user = auth.currentUser
         if (user == null) {
             Toast.makeText(this, "User tidak terautentikasi", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Format date of birth
-        val formattedDob = formatDateOfBirth(dobInput)
-        if (formattedDob.isNullOrEmpty()) {
-            Toast.makeText(this, "Tanggal lahir tidak valid", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -134,28 +111,47 @@ class UpdateProfileActivity : AppCompatActivity() {
         val credential = EmailAuthProvider.getCredential(user.email!!, password)
         user.reauthenticate(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Calculate age
-                val age = calculateAge(dobInput)
-                if (age < 0) {
-                    Toast.makeText(this, "Tanggal lahir tidak valid", Toast.LENGTH_SHORT).show()
-                    return@addOnCompleteListener
+                val userUpdates = mutableMapOf<String, Any>()
+
+                // Tambahkan nama jika tidak kosong
+                if (!name.isNullOrBlank()) {
+                    userUpdates["userName"] = name
                 }
 
-                // Update Firestore
-                val userUpdates = mapOf(
-                    "userName" to name,
-                    "dateBirth" to formattedDob, // Save formatted date
-                    "age" to age
-                )
-                firestore.collection("users").document(user.uid)
-                    .update(userUpdates)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()
-                        finish()
+                // Format dan tambahkan tanggal lahir jika tidak kosong
+                if (!dobInput.isNullOrBlank()) {
+                    val formattedDob = formatDateOfBirth(dobInput)
+                    if (!formattedDob.isNullOrEmpty()) {
+                        userUpdates["dateBirth"] = formattedDob
+
+                        // Hitung usia hanya jika tanggal lahir valid
+                        val age = calculateAge(dobInput)
+                        if (age >= 0) {
+                            userUpdates["age"] = age
+                        } else {
+                            Toast.makeText(this, "Tanggal lahir tidak valid", Toast.LENGTH_SHORT).show()
+                            return@addOnCompleteListener
+                        }
+                    } else {
+                        Toast.makeText(this, "Format tanggal lahir tidak valid", Toast.LENGTH_SHORT).show()
+                        return@addOnCompleteListener
                     }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Gagal memperbarui data: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                }
+
+                // Perbarui Firestore jika ada field yang ingin diubah
+                if (userUpdates.isNotEmpty()) {
+                    firestore.collection("users").document(user.uid)
+                        .update(userUpdates)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Gagal memperbarui data: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(this, "Tidak ada perubahan data", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "Autentikasi gagal. Periksa password Anda", Toast.LENGTH_SHORT).show()
             }
