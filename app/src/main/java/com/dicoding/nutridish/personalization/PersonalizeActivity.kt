@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.dicoding.nutridish.main.MainActivity
 import com.dicoding.nutridish.R
-import com.dicoding.nutridish.databinding.ActivityPersonalizeBinding
 import com.dicoding.nutridish.view.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,13 +21,28 @@ class PersonalizeActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        val sharedPreferences = getSharedPreferences("Personalization", MODE_PRIVATE)
-        val isFirstLogin = sharedPreferences.getBoolean("isFirstLogin", true)
-
-        if (!isFirstLogin) {
-            startActivity(Intent(this, HomeActivity::class.java))
+        auth.currentUser?.let { user ->
+            firestore.collection("users").document(user.uid).get()
+                .addOnSuccessListener { document ->
+                    val weight = document.getLong("weight")?.toInt()
+                    if (weight != null && weight > 0) {
+                        // Jika weight ada dan lebih besar dari 0, arahkan ke HomeActivity
+                        startActivity(Intent(this, HomeActivity::class.java))
+                        finish()
+                    } else {
+                        // Jika weight null atau 0, tetap di PersonalizeActivity
+                        setContentView(R.layout.activity_personalize)
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, WeightFragment())
+                            .commit()
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Gagal memeriksa data: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        } ?: run {
+            Toast.makeText(this, "User tidak ditemukan", Toast.LENGTH_SHORT).show()
             finish()
-            return
         }
 
         setContentView(R.layout.activity_personalize)
@@ -45,14 +58,22 @@ class PersonalizeActivity : AppCompatActivity() {
             .commit()
     }
 
+    fun saveAndBack(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+
+
     fun completePersonalization() {
         val sharedPreferences = getSharedPreferences("Personalization", MODE_PRIVATE)
         val weight = sharedPreferences.getInt("weight", 0)
         val avoidPork = sharedPreferences.getBoolean("avoidPork", false)
         val avoidAlcohol = sharedPreferences.getBoolean("avoidAlcohol", false)
 
-        val porkValue = if (avoidPork) 0 else 1
-        val alcoholValue = if (avoidAlcohol) 0 else 1
+        val porkValue = if (avoidPork) 1 else 0
+        val alcoholValue = if (avoidAlcohol) 1 else 0
 
         val userId = auth.currentUser?.uid
         if (userId != null) {

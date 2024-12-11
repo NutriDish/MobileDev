@@ -16,13 +16,20 @@ class AvoidPorkFragment : Fragment(R.layout.fragment_avoid_pork) {
 
         val nextButton = view.findViewById<Button>(R.id.btn_next)
         val avoidPorkCheckbox = view.findViewById<CheckBox>(R.id.cb_avoid_pork)
+        val backButton = view.findViewById<Button>(R.id.btn_back)
+
+        val sharedPreferences = requireActivity().getSharedPreferences("Personalization", AppCompatActivity.MODE_PRIVATE)
+        val savedAvoidPork = sharedPreferences.getBoolean("avoidPork", false)
+        avoidPorkCheckbox.isChecked = savedAvoidPork
 
         nextButton.setOnClickListener {
             val avoidPork = avoidPorkCheckbox.isChecked
-            val sharedPreferences = requireActivity().getSharedPreferences("Personalization", AppCompatActivity.MODE_PRIVATE)
             sharedPreferences.edit().putBoolean("avoidPork", avoidPork).apply()
-
             (activity as PersonalizeActivity).saveAndNext(AvoidAlcoholFragment())
+        }
+
+        backButton.setOnClickListener {
+            (activity as PersonalizeActivity).saveAndBack(WeightFragment())
         }
     }
 }
