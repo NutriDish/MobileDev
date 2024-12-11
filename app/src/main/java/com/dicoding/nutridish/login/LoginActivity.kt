@@ -100,7 +100,6 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val weight = document.getLong("weight")?.toInt()
-                    val age = document.getLong("age")?.toInt()
 
                     if (weight == 0 || weight == null) {
                         startActivity(Intent(this, PersonalizeActivity::class.java))
@@ -116,5 +115,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal memeriksa data pengguna: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
 }
