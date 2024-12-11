@@ -66,11 +66,19 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
-    suspend fun searchRecipes(query: String, filters: String?): List<ResponseItem?>? {
+    suspend fun searchRecipes(query: String, filters: String?, page: Int = 1, pageSize: Int = 100): List<ResponseItem?>? {
         return try {
             val response = apiService.searchRecipes(query, filters)
             if (response.isSuccessful) {
-                response.body()
+                val allRecipes = response.body() ?: emptyList()
+                val startIndex = (page - 1) * pageSize
+                val endIndex = minOf(startIndex + pageSize, allRecipes.size)
+
+                if (startIndex >= allRecipes.size) {
+                    emptyList() // Return empty list if page is beyond available data
+                } else {
+                    allRecipes.subList(startIndex, endIndex)
+                }
             } else {
                 null
             }

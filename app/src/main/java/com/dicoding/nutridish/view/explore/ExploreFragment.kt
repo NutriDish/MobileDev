@@ -56,8 +56,26 @@ class ExploreFragment : Fragment() {
         }
 
         binding.recyclerViewSearch.apply {
-            layoutManager = GridLayoutManager(context, 2)
+            val gridLayoutManager = GridLayoutManager(context, 2)
+            layoutManager = gridLayoutManager
             adapter = recipeAdapter
+
+            // Add scroll listener for lazy loading
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val visibleItemCount = gridLayoutManager.childCount
+                    val totalItemCount = gridLayoutManager.itemCount
+                    val firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition()
+
+                    // Load more when scrolled near the end
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0) {
+                        viewModel.loadMoreRecipes()
+                    }
+                }
+            })
         }
 
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -172,11 +190,7 @@ class ExploreFragment : Fragment() {
     }
 
     private fun searchRecipes(query: String, filters: String? = null) {
-        viewModel.setLoading(true)
-        lifecycleScope.launch {
-            viewModel.searchRecipes(query, filters)
-            viewModel.setLoading(false)
-        }
+        viewModel.searchRecipes(query, filters)
     }
 
 }
