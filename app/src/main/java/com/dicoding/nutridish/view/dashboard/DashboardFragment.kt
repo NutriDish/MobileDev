@@ -184,7 +184,6 @@ class DashboardFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleMealNotifications() {
-        // Cek apakah notifikasi diizinkan
         if (!isNotificationPermissionGranted()) {
             requestNotificationPermission()
             return
@@ -192,7 +191,6 @@ class DashboardFragment : Fragment() {
 
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        // Existing alarm permission check
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
             val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
             startActivity(intent)
@@ -227,7 +225,7 @@ class DashboardFragment : Fragment() {
                 }
 
                 if (calendar.timeInMillis < System.currentTimeMillis()) {
-                    calendar.add(Calendar.DAY_OF_YEAR, 1) // Jadwalkan untuk hari berikutnya jika waktu telah berlalu
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
                 }
 
                 alarmManager.setExactAndAllowWhileIdle(
@@ -248,7 +246,7 @@ class DashboardFragment : Fragment() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         } else {
-            true // Pada Android versi di bawah 13, izin notifikasi tidak perlu diminta secara eksplisit
+            true
         }
     }
 

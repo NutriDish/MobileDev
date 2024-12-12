@@ -1,5 +1,6 @@
 package com.dicoding.nutridish.view.explore
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -144,7 +146,8 @@ class ExploreAdapter(
                 val context = itemView.context
                 val intent = Intent(context, DetailActivity::class.java)
                 intent.putExtra("recipe_data_list", recipe)
-                context.startActivity(intent)
+//                context.startActivity(intent)
+                itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
             }
             onLoading(false)
         }
