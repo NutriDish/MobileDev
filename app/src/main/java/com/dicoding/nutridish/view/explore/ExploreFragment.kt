@@ -8,12 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.nutridish.R
@@ -21,7 +17,6 @@ import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.databinding.FragmentExploreBinding
 import com.dicoding.nutridish.view.explore.upload.UploadImageActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.coroutines.launch
 
 class ExploreFragment : Fragment() {
 
@@ -60,7 +55,6 @@ class ExploreFragment : Fragment() {
             layoutManager = gridLayoutManager
             adapter = recipeAdapter
 
-            // Add scroll listener for lazy loading
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -69,7 +63,6 @@ class ExploreFragment : Fragment() {
                     val totalItemCount = gridLayoutManager.itemCount
                     val firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition()
 
-                    // Load more when scrolled near the end
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                         && firstVisibleItemPosition >= 0) {
                         viewModel.loadMoreRecipes()
@@ -100,25 +93,20 @@ class ExploreFragment : Fragment() {
     }
 
     private fun showImageActivity() {
-        // Create the dialog
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Confirmation")
         builder.setMessage("Do you want to use the image classification based on ingredients feature?")
 
-        // Set up the "Yes" button
         builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
-            // Navigate to UploadImageActivity
             val intent = Intent(requireContext(), UploadImageActivity::class.java)
             startActivity(intent)
         }
 
-        // Set up the "No" button
         builder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss() // Close the dialog
+            dialog.dismiss()
         }
 
-        // Show the dialog
         val dialog = builder.create()
         dialog.show()
     }
