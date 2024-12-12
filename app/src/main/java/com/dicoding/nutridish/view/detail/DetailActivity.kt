@@ -88,23 +88,26 @@
                         binding.proteintext.text = data.protein?.toString() ?: "0"
                         binding.fattext.text = data.fat?.toString() ?: "0"
                         binding.sodiumtext.text = data.sodium?.toString() ?: "0"
-                        viewModel.checkBookmark(data.title.toString().trim()).observe(this) { eventEntity ->
+
+                        // Initialize NutriEntity
+                        if (nutriItem != null) {
+                            database = NutriEntity(
+                                title = nutriItem.title ?: "Data Is Missing!",
+                                mediaCover = null,
+                                calories = data.calories ?: 0,
+                                protein = data.protein ?: 0,
+                                fat = data.fat ?: 0,
+                                sodium = data.sodium ?: 0,
+                                isBookmarked = true
+                            )
+                        }
+                        viewModel.checkBookmark(database.title.trim()).observe(this) { eventEntity ->
                             if (eventEntity != null) {
                                 binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_24)
                             } else {
                                 binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_24)
                             }
                         }
-                        // Initialize NutriEntity
-                        database = NutriEntity(
-                            title = data.title ?: "Data Is Missing!",
-                            mediaCover = null,
-                            calories = data.calories ?: 0,
-                            protein = data.protein ?: 0,
-                            fat = data.fat ?: 0,
-                            sodium = data.sodium ?: 0,
-                            isBookmarked = true
-                        )
                     }
                 }
             }
