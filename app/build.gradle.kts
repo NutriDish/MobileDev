@@ -33,6 +33,7 @@ android {
         viewBinding = true
         //noinspection DataBindingWithoutKapt
         dataBinding = true
+        mlModelBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -88,6 +89,11 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("androidx.core:core-splashscreen:1.0.0")
+
+    // TODO: Tambahkan Library TensorFlow Lite
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.4")
 
 
 
