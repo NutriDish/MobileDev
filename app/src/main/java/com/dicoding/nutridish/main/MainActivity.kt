@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
@@ -43,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         setupView()
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         viewModel.getSession().observe(this) { user ->
             if (user.isLogin) {

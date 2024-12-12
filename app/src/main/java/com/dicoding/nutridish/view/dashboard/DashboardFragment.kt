@@ -40,6 +40,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.*
+import android.os.Build.VERSION_CODES
 
 class DashboardFragment : Fragment() {
 
@@ -50,11 +51,6 @@ class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
-
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-        private const val API_KEY = "ff948dc9af3f8c4ab8c01619e3ac0eb1"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,7 +113,6 @@ class DashboardFragment : Fragment() {
             }
         }
 
-
         binding.recyclerViewRecentlyAdded.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recentlyAdapter
@@ -127,13 +122,10 @@ class DashboardFragment : Fragment() {
 
     private fun setupTimeUpdates() {
         lifecycleScope.launch {
-            while (isAdded) {  // Check if the fragment is still added to the activity
+            while (isAdded) {
                 val currentTime = Calendar.getInstance().time
                 val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-                // Null check for binding
-                binding?.let {
-                    it.textTime.text = timeFormat.format(currentTime)
-                }
+                binding.textTime.text = timeFormat.format(currentTime)
                 delay(1000)
             }
         }
@@ -192,11 +184,16 @@ class DashboardFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleMealNotifications() {
+        // Cek apakah notifikasi diizinkan
+        if (!isNotificationPermissionGranted()) {
+            requestNotificationPermission()
+            return
+        }
+
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        // Periksa izin untuk menjadwalkan alarm yang tepat
+        // Existing alarm permission check
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-            // Jika izin tidak ada, arahkan pengguna ke pengaturan
             val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
             startActivity(intent)
             Toast.makeText(
@@ -244,6 +241,26 @@ class DashboardFragment : Fragment() {
         }
     }
 
+    private fun isNotificationPermissionGranted(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true // Pada Android versi di bawah 13, izin notifikasi tidak perlu diminta secara eksplisit
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (VERSION_CODES.TIRAMISU <= Build.VERSION.SDK_INT) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                NOTIFICATION_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
 
     interface WeatherApi {
         @GET("weather")
@@ -253,6 +270,12 @@ class DashboardFragment : Fragment() {
             @Query("appid") apiKey: String,
             @Query("units") units: String
         ): retrofit2.Call<WeatherResponse>
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 2
+        private const val API_KEY = "ff948dc9af3f8c4ab8c01619e3ac0eb1"
     }
 
     data class WeatherResponse(
@@ -268,4 +291,29 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 
+    @Deprecated("Deprecated in Java")
+    @RequiresApi(VERSION_CODES.O)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            NOTIFICATION_PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    scheduleMealNotifications()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Notifikasi dinonaktifkan. Anda akan melewatkan pengingat makanan.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
 }
+
+

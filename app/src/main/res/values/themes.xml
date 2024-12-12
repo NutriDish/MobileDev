@@ -3,6 +3,7 @@
     <style name="Base.Theme.Nutridish" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/light_orange</item>
+        <item name="android:fontFamily">@font/fontfamily</item>
 
     </style>
 
