@@ -1,21 +1,34 @@
 package com.dicoding.nutridish.view.explore
 
-import android.app.AlertDialog
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
 import com.dicoding.nutridish.databinding.FragmentExploreBinding
-import com.dicoding.nutridish.view.explore.upload.UploadImageActivity
+import com.dicoding.nutridish.helper.ImageClassifierHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ExploreFragment : Fragment() {
@@ -26,6 +39,50 @@ class ExploreFragment : Fragment() {
     private lateinit var recipeAdapter: ExploreAdapter
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
+
+    private val classLabels = listOf(
+        "beans", "beef", "bell pepper", "bread", "butter", "cabbage", "carrot",
+        "cheese", "chicken", "egg", "eggplant", "fish", "onion", "pasta",
+        "peanut", "pork", "potato", "rice", "shrimp", "tofu", "tomato", "zucchini"
+    )
+
+    private var currentImageUri: Uri? = null
+
+    private val galleryLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val selectedImageUri = result.data?.data
+                selectedImageUri?.let {
+                    currentImageUri = it
+                    analyzeImage(it)
+                }
+            }
+        }
+
+    private val cameraLauncher: ActivityResultLauncher<Uri> =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                currentImageUri?.let {
+                    currentImageUri = it
+                    analyzeImage(it)
+                }
+            }
+        }
+
+    private val requestPermissionLauncher: ActivityResultLauncher<Array<String>> =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions[Manifest.permission.CAMERA] == true &&
+                permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true
+            ) {
+                openCamera()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Permissions are required to use the camera.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +100,7 @@ class ExploreFragment : Fragment() {
         }
 
         binding.capture.setOnClickListener {
-            showImageActivity()
+            showImageSourceDialog()
         }
 
         recipeAdapter = ExploreAdapter { isLoading ->
@@ -87,28 +144,106 @@ class ExploreFragment : Fragment() {
             if (recipes != null) {
                 recipeAdapter.updateRecipes(recipes.filterNotNull())
             }
+
         }
         searchRecipes("")
 
+
     }
 
-    private fun showImageActivity() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirmation")
-        builder.setMessage("Do you want to use the image classification based on ingredients feature?")
+    private fun analyzeImage(image : Uri){
+            // Initialize the ImageClassifierHelper here and classify the image
+            val imageClassifierHelper = ImageClassifierHelper(
+                context = requireContext(),
+                classifierListener = object : ImageClassifierHelper.ClassifierListener {
+                    override fun onError(error: String) {
+                        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                    }
 
-        builder.setPositiveButton("Yes") { dialog, _ ->
+                    override fun onResults(results: FloatArray, inferenceTime: Long) {
+                        if (results.isNotEmpty()) {
+                            val maxIndex = results.indices.maxByOrNull { results[it] } ?: -1
+                            if (maxIndex >= 0) {
+                                val predictedLabel = classLabels[maxIndex]
+                                // Pass the predicted label to ExploreFragment
+                                searchRecipes(predictedLabel)
+
+                            }
+                        }
+                    }
+                }
+            )
+
+            // Trigger classification with the uploaded image URI
+            imageClassifierHelper.classifyStaticImage(image)
+
+    }
+
+    private fun showImageSourceDialog() {
+        val dialog = BottomSheetDialog(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_capture_image, null)
+
+        dialogView.findViewById<View>(R.id.btnCamera)?.setOnClickListener {
             dialog.dismiss()
-            val intent = Intent(requireContext(), UploadImageActivity::class.java)
-            startActivity(intent)
+            checkCameraPermissionAndOpenCamera()
         }
 
-        builder.setNegativeButton("No") { dialog, _ ->
+        dialogView.findViewById<View>(R.id.btnGallery)?.setOnClickListener {
             dialog.dismiss()
+            openGallery()
         }
 
-        val dialog = builder.create()
+        dialog.setContentView(dialogView)
         dialog.show()
+    }
+
+
+    @SuppressLint("ObsoleteSdkInt")
+    private fun checkCameraPermissionAndOpenCamera() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED)
+        ) {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            )
+        } else {
+            openCamera()
+        }
+    }
+
+    private fun openCamera() {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_${System.currentTimeMillis()}" + ".jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+
+        currentImageUri = requireContext().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            contentValues
+        )
+
+        currentImageUri?.let {
+            cameraLauncher.launch(it)
+        }
+        if (currentImageUri != null){
+            analyzeImage(currentImageUri!!)
+        }
+
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(intent)
     }
 
 
@@ -179,6 +314,9 @@ class ExploreFragment : Fragment() {
 
     private fun searchRecipes(query: String, filters: String? = null) {
         viewModel.searchRecipes(query, filters)
+        Toast.makeText(requireContext(), "Searching for $query", Toast.LENGTH_SHORT).show()
     }
+
+
 
 }

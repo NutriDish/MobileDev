@@ -92,5 +92,6 @@
     <string name="about_app">About App</string>
     <string name="log_out">Log Out</string>
     <string name="enter_your_weight">Enter your weight</string>
+    <string name="dialog_image">Input or Take a Picture to use Image Classification feature to find recipe based on 1 ingredients on your image.</string>
 
 </resources>
