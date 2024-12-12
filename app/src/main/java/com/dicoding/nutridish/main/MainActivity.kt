@@ -18,82 +18,42 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.nutridish.R
 import com.dicoding.nutridish.ViewModelFactory
-import com.dicoding.nutridish.databinding.ActivityLoginBinding
 import com.dicoding.nutridish.databinding.ActivityMainBinding
 import com.dicoding.nutridish.login.LoginActivity
 import com.dicoding.nutridish.personalization.PersonalizeActivity
 import com.dicoding.nutridish.view.HomeActivity
 import com.dicoding.nutridish.signup.SignUpActivity
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var firestore: FirebaseFirestore
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this) // Make sure ViewModelFactory is correctly set up
+        ViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         setupView()
-        auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        // Setup login text with clickable span
+        setupLoginTextSpan()
 
-        viewModel.getSession().observe(this) { user ->
-            if (user.isLogin) {
-                auth.signInWithEmailAndPassword(user.email, user.password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val users = auth.currentUser
-                            if (users != null) {
-                                firestore.collection("users").document(users.uid).get()
-                                    .addOnSuccessListener { document ->
-                                        if (document.exists()) {
-                                            val weight = document.getLong("weight")?.toInt()
-                                            val age = document.getLong("age")?.toInt()
-
-                                            val targetActivity = if (weight == 0 || age == 0) {
-                                                PersonalizeActivity::class.java
-                                            } else {
-                                                HomeActivity::class.java
-                                            }
-
-                                            startActivity(
-                                                Intent(this, targetActivity).apply {
-                                                    flags =
-                                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                                }
-                                            )
-                                        }
-                                    }
-                                    .addOnFailureListener {
-                                        showToast("Failed to retrieve user data.")
-                                    }
-                            }
-                        } else {
-                            lifecycleScope.launch {
-                                viewModel.logout()
-                                showToast("Authentication failed.")
-                            }
-                        }
-                    }
-            }
+        // Setup register button
+        binding.registerButton.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
+    }
 
-
-
+    private fun setupLoginTextSpan() {
         val textView = findViewById<TextView>(R.id.textLogin)
-
         val text = getString(R.string.already_have_account)
-
         val spannableString = SpannableString(text)
 
         val clickableSpan = object : ClickableSpan() {
@@ -114,14 +74,9 @@ class MainActivity : AppCompatActivity() {
 
         textView.text = spannableString
         textView.movementMethod = LinkMovementMethod.getInstance()
-
-        binding.registerButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, SignUpActivity::class.java)
-            startActivity(intent)
-        }
     }
 
-    fun setupView() {
+    private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
@@ -133,9 +88,4 @@ class MainActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
 }

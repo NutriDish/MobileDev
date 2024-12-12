@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.cardview)
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("androidx.core:core-splashscreen:1.0.0")
 
 
 
