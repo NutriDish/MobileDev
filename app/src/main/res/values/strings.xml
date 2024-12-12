@@ -8,7 +8,7 @@
     <string name="title_signup_page">Sign Up</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="message_login_page">New user? Create an account</string>
+    <string name="message_login_page" translatable="false">New user? Create an account</string>
     <string name="title_login_page">Sign In</string>
     <string name="name">Name</string>
     <string name="greeting">Halo %1$s,</string>
@@ -17,44 +17,80 @@
     <string name="ed_email_signup">Enter Email</string>
     <string name="ed_email_login">Enter Email</string>
     <string name="ed_password_login">Enter Password</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="dashboard">Dashboard</string>
     <string name="explore">Explore</string>
     <string name="favorite">Favorite</string>
     <string name="profile">Profile</string>
     <string name="background">Background</string>
-    <string name="Text_login">Already have an account? Login</string>
-    <string name="already_have_account">Already have an account? Login</string>
+    <string name="Text_login" translatable="false">Already have an account? Login</string>
+    <string name="already_have_account" translatable="false">Already have an account? Login</string>
     <string name="forgotpw">Forgot Password?</string>
-    <string name="message_signup_page">Already a user here? Sign In</string>
-    <string name="username_textview">Username</string>
+    <string name="message_signup_page" translatable="false">Already a user here? Sign In</string>
+    <string name="username_textview" translatable="false">Username</string>
     <string name="passwordcf">Confirm Password</string>
-    <string name="header_profile">Profile</string>
-    <string name="header_favorite">Favorite</string>
-    <string name="login">Login</string>
+    <string name="header_profile" translatable="false">Profile</string>
+    <string name="header_favorite" translatable="false">Favorite</string>
+    <string name="login" translatable="false">Login</string>
     <string name="signup">Register</string>
-    <string name="back">kembali</string>
+    <string name="back">Back</string>
     <string name="update_profile">Update Profile</string>
     <string name="title_update_page">Update Your Profile Here !</string>
-    <string name="message_update_page">Fill or Edit the form below</string>
+    <string name="message_update_page">Fill the form below</string>
     <string name="about_app_title">About Nutridish</string>
-    <string name="about_app_description">Nutridish is an innovative mobile application designed to empower individuals and families, especially in vulnerable communities, to make healthier dietary choices through easy access to nutritious recipes.
+    <string name="about_app_description" translatable="false">Nutridish is an innovative mobile application designed to empower individuals and families, especially in vulnerable communities, to make healthier dietary choices through easy access to nutritious recipes.
        In Indonesia, where child malnutrition is a significant issue, Nutridish aims to combat inadequate nutrition by promoting healthy eating habits and fostering a culture of home-cooked meals. The app offers a variety of healthy recipes, emphasizes balanced diets, and provides tools for ingredient management and meal planning.</string>
-    <string name="creators_title">Creators</string>
-    <string name="creator_1">M286B4KY0131 – Adrian Reynold Ga - Machine Learning</string>
-    <string name="creator_2">M286B4KY2185 – Kevin Junus Ketti - Machine Learning</string>
-    <string name="creator_3">M286B4KX3976 – Ruvina Febrianti Malelak - Machine Learning</string>
-    <string name="creator_4">C249B4KX2278 – Lira Serli Selviana - Cloud Computing</string>
-    <string name="creator_5">C249B4KY2843 – Muhammad Fauzan Fadillah - Cloud Computing</string>
-    <string name="creator_6">A115B4KY2302 – Lutfi Ekaprima Jannata - Mobile Development</string>
-    <string name="creator_7">A115B4KY3826 – Ridhuan Rangga Kusuma - Mobile Development</string>
-    <string name="version">Version: 1.0.0</string>
-    <string name="title_about_page">About App</string>
+    <string name="creators_title" translatable="false">Creators</string>
+    <string name="creator_1" translatable="false">M286B4KY0131 – Adrian Reynold Ga - Machine Learning</string>
+    <string name="creator_2" translatable="false">M286B4KY2185 – Kevin Junus Ketti - Machine Learning</string>
+    <string name="creator_3" translatable="false">M286B4KX3976 – Ruvina Febrianti Malelak - Machine Learning</string>
+    <string name="creator_4" translatable="false">C249B4KX2278 – Lira Serli Selviana - Cloud Computing</string>
+    <string name="creator_5" translatable="false">C249B4KY2843 – Muhammad Fauzan Fadillah - Cloud Computing</string>
+    <string name="creator_6" translatable="false">A115B4KY2302 – Lutfi Ekaprima Jannata - Mobile Development</string>
+    <string name="creator_7" translatable="false">A115B4KY3826 – Ridhuan Rangga Kusuma - Mobile Development</string>
+    <string name="version" translatable="false">Version: 1.0.0</string>
+    <string name="title_about_page" translatable="false">About App</string>
     <string name="change_data">Change Data</string>
     <string name="enter_new_name">Enter New Name</string>
-    <string name="upload">upload</string>
+    <string name="upload">Upload</string>
     <string name="file_upload_text">Upload or Take a picture to use this image classification feature based on ingredients</string>
-    <string name="camera">camera</string>
-    <string name="gallery">gallery</string>
+    <string name="camera" translatable="false">Camera</string>
+    <string name="gallery" translatable="false">Gallery</string>
+    <string name="btnback">Back</string>
+    <string name="calories">Calories</string>
+    <string name="grams" translatable="false">grams</string>
+    <string name="protein">Protein</string>
+    <string name="fat">Fat</string>
+    <string name="sodium">Sodium</string>
+    <string name="description">Description</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="reset_password" translatable="false">Reset Password</string>
+    <string name="enter_email">Enter email</string>
+    <string name="date">Date</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="enter_new_date">Enter New Date</string>
+    <string name="do_you_avoid_alcohol">Do you avoid alcohol?</string>
+    <string name="i_avoid_alcohol">I avoid alcohol</string>
+    <string name="finish">Finish</string>
+    <string name="do_you_avoid_pork">Do you avoid pork?</string>
+    <string name="i_avoid_pork">I avoid pork</string>
+    <string name="next">Next</string>
+    <string name="times" translatable="false">08:30</string>
+    <string name="tempt" translatable="false">2°C</string>
+    <string name="today_s_schedules">Today\'s schedules:</string>
+    <string name="ScheduleText" translatable="false">Vegetable Stir-Fry</string>
+    <string name="recommended_for_you">Recommended for you</string>
+    <string name="recommended_food_title" translatable="false">Recommended Food Title</string>
+    <string name="recently_added">Recently Added</string>
+    <string name="weekly_food_recommendation">Weekly Food Recommendation</string>
+    <string name="search_result">Search Result</string>
+    <string name="data_favorite_is_empty">Data Favorite is Empty</string>
+    <string name="nameprofile" translatable="false">Name :</string>
+    <string name="emailprofile" translatable="false">Email :</string>
+    <string name="update_profiles">Update Profile</string>
+    <string name="about_app">About App</string>
+    <string name="log_out">Log Out</string>
+    <string name="enter_your_weight">Enter your weight</string>
 
 </resources>

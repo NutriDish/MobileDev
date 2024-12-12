@@ -104,7 +104,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:textStyle="bold"
-            android:text="Weekly Food Recommendation"
+            android:text="@string/weekly_food_recommendation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -128,7 +128,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:textStyle="bold"
-            android:text="Search Result"
+            android:text="@string/search_result"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/weeklyRecyclerView" />
 

@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:padding="8dp"
-            android:text="Back"
+            android:text="@string/btnback"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,6 @@
                 android:id="@+id/favoriteButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:contentDescription="TODO"
                 android:background="@color/transparent"
                 android:padding="8dp" />
         </LinearLayout>
@@ -75,7 +74,6 @@
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
-            android:text="Avocado Toast with Egg"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -116,7 +114,6 @@
                         android:layout_height="wrap_content"
                         android:background="@color/dark_orange"
                         android:gravity="center"
-                        android:text="8"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -124,14 +121,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Calories"
+                        android:text="@string/calories"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="grams"
+                        android:text="@string/grams"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -159,7 +156,6 @@
                         android:layout_height="wrap_content"
                         android:background="@color/dark_orange"
                         android:gravity="center"
-                        android:text="8"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -167,14 +163,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Protein"
+                        android:text="@string/protein"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="grams"
+                        android:text="@string/grams"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -202,7 +198,6 @@
                         android:layout_height="wrap_content"
                         android:background="@color/dark_orange"
                         android:gravity="center"
-                        android:text="8"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -210,14 +205,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fat"
+                        android:text="@string/fat"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="grams"
+                        android:text="@string/grams"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -245,7 +240,6 @@
                         android:layout_height="wrap_content"
                         android:background="@color/dark_orange"
                         android:gravity="center"
-                        android:text="8"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -253,14 +247,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sodium"
+                        android:text="@string/sodium"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="grams"
+                        android:text="@string/grams"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -302,7 +296,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="Description"
+            android:text="@string/description"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -326,7 +320,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -338,7 +331,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="Ingredients"
+            android:text="@string/ingredients"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -362,7 +355,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -374,7 +366,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="Instructions"
+            android:text="@string/instructions"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -404,7 +396,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="20dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 

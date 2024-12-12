@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Apakah Anda menghindari daging babi?"
+        android:text="@string/do_you_avoid_pork"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintVertical_bias="0.400"
@@ -24,7 +24,7 @@
         android:id="@+id/cb_avoid_pork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saya menghindari daging babi"
+        android:text="@string/i_avoid_pork"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_question_pork" />
@@ -34,7 +34,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Kembali"
+        android:text="@string/btnback"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cb_avoid_pork" />
 
@@ -43,7 +43,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Lanjut"
+        android:text="@string/next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cb_avoid_pork" />
 
