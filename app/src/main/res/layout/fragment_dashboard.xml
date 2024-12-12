@@ -180,57 +180,8 @@
             app:layout_constraintTop_toBottomOf="@+id/mainContentLayout"
             app:layout_constraintVertical_bias="0.025" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/recommendationContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.363"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textRecommendationLabel">
-
-            <ImageView
-                android:id="@+id/recommendedImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/imgfood14"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/recommendedTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/recommended_food_title"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recommendedImage" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Recently Added-->
-        <TextView
-            android:id="@+id/textRecentlyAdded"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/recently_added"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recommendationContainer" />
-
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewRecentlyAdded"
+            android:id="@+id/recyclerViewrecommendation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -241,6 +192,30 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:orientation="horizontal" />
+
+        <!-- Recently Added-->
+        <TextView
+            android:id="@+id/textRecentlyAdded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:text="@string/recently_added"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewRecentlyAdded" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewRecentlyAdded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textRecommendationLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

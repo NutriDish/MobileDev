@@ -41,6 +41,7 @@ import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.*
 import android.os.Build.VERSION_CODES
+import com.dicoding.nutridish.notification.NotificationsBottomSheet
 
 class DashboardFragment : Fragment() {
 
@@ -116,6 +117,10 @@ class DashboardFragment : Fragment() {
         binding.recyclerViewRecentlyAdded.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recentlyAdapter
+        }
+
+        binding.iconNotification.setOnClickListener {
+            NotificationsBottomSheet().show(parentFragmentManager, "NotificationsBottomSheet")
         }
 
     }
@@ -205,7 +210,7 @@ class DashboardFragment : Fragment() {
         val mealTimes = listOf(
             Pair(7, "Breakfast time! Don't forget to eat."),
             Pair(13, "Lunch time! It's important to stay energized."),
-            Pair(19, "Dinner time! End your day with a good meal.")
+            Pair(21, "Dinner time! End your day with a good meal.")
         )
 
         for ((hour, message) in mealTimes) {
