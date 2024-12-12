@@ -10,7 +10,7 @@ import kotlinx.parcelize.RawValue
 
 @Entity(tableName = "NutriDish")
 @Parcelize
-data class  NutriEntity(
+data class NutriEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var title: String = "",
@@ -22,3 +22,12 @@ data class  NutriEntity(
     @ColumnInfo("bookmarked")
     var isBookmarked: Boolean
 ) : Parcelable
+
+@Entity(tableName = "notifications")
+data class NotificationEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val title: String,
+    val message: String,
+    val timestamp: Long
+)

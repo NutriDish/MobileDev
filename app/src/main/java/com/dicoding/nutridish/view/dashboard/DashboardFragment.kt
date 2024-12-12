@@ -41,6 +41,7 @@ import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.*
 import android.os.Build.VERSION_CODES
+import com.dicoding.nutridish.notification.NotificationsBottomSheet
 
 class DashboardFragment : Fragment() {
 
@@ -118,6 +119,10 @@ class DashboardFragment : Fragment() {
             adapter = recentlyAdapter
         }
 
+        binding.iconNotification.setOnClickListener {
+            NotificationsBottomSheet().show(parentFragmentManager, "NotificationsBottomSheet")
+        }
+
     }
 
     private fun setupTimeUpdates() {
@@ -184,7 +189,6 @@ class DashboardFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleMealNotifications() {
-        // Cek apakah notifikasi diizinkan
         if (!isNotificationPermissionGranted()) {
             requestNotificationPermission()
             return
@@ -192,7 +196,6 @@ class DashboardFragment : Fragment() {
 
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        // Existing alarm permission check
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
             val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
             startActivity(intent)
@@ -207,7 +210,7 @@ class DashboardFragment : Fragment() {
         val mealTimes = listOf(
             Pair(7, "Breakfast time! Don't forget to eat."),
             Pair(13, "Lunch time! It's important to stay energized."),
-            Pair(19, "Dinner time! End your day with a good meal.")
+            Pair(21, "Dinner time! End your day with a good meal.")
         )
 
         for ((hour, message) in mealTimes) {
@@ -227,7 +230,7 @@ class DashboardFragment : Fragment() {
                 }
 
                 if (calendar.timeInMillis < System.currentTimeMillis()) {
-                    calendar.add(Calendar.DAY_OF_YEAR, 1) // Jadwalkan untuk hari berikutnya jika waktu telah berlalu
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
                 }
 
                 alarmManager.setExactAndAllowWhileIdle(
@@ -248,7 +251,7 @@ class DashboardFragment : Fragment() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         } else {
-            true // Pada Android versi di bawah 13, izin notifikasi tidak perlu diminta secara eksplisit
+            true
         }
     }
 

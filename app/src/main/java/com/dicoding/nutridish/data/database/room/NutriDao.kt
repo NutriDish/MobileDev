@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.dicoding.nutridish.data.database.entity.NotificationEntity
 import com.dicoding.nutridish.data.database.entity.NutriEntity
 
 @Dao
@@ -32,4 +33,17 @@ interface NutriDao   {
 
     @Query("SELECT * FROM NutriDish WHERE title = :id")
     fun getFavoriteNutriById(id: String): LiveData<NutriEntity?>
+}
+
+@Dao
+interface NotificationDao {
+
+    @Insert
+    fun insertNotification(notification: NotificationEntity)
+
+    @Query("SELECT * FROM notifications ORDER BY timestamp DESC")
+    fun getAllNotifications(): LiveData<List<NotificationEntity>>
+
+    @Query("DELETE FROM notifications")
+    fun clearNotifications()
 }
