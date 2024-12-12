@@ -1,7 +1,6 @@
 package com.dicoding.nutridish.data.database.entity
 
 
-import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -16,6 +15,10 @@ data class  NutriEntity(
     var id: Int = 0,
     var title: String = "",
     var mediaCover: String? = null,
+    var protein: @RawValue Any? = null,
+    var fat: @RawValue Any? = null,
+    var sodium: @RawValue Any? = null,
+    var calories: @RawValue Any? = null,
     @ColumnInfo("bookmarked")
     var isBookmarked: Boolean
 ) : Parcelable
