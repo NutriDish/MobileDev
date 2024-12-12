@@ -4,17 +4,10 @@
 
     import android.annotation.SuppressLint
     import android.os.Bundle
-    import android.os.Parcelable
     import android.util.Log
     import android.view.View
-    import android.widget.TextView
     import android.widget.Toast
-    import androidx.activity.enableEdgeToEdge
-    import androidx.annotation.DrawableRes
     import androidx.appcompat.app.AppCompatActivity
-    import androidx.core.content.ContextCompat
-    import androidx.core.view.ViewCompat
-    import androidx.core.view.WindowInsetsCompat
     import androidx.lifecycle.LifecycleOwner
     import androidx.lifecycle.LiveData
     import androidx.lifecycle.Observer
@@ -22,7 +15,6 @@
     import androidx.lifecycle.lifecycleScope
     import com.dicoding.nutridish.R
     import com.dicoding.nutridish.ViewModelFactory
-    import com.dicoding.nutridish.data.api.response.ResponseRecipeDetail
     import com.dicoding.nutridish.data.database.entity.NutriEntity
     import com.dicoding.nutridish.databinding.ActivityDetailBinding
     import kotlinx.coroutines.launch
@@ -57,13 +49,7 @@
                     )
                 }
 
-
-                Log.d("DetailEventActivity", "Event data: $nutriItem") // log untuk lihat data
-                database = NutriEntity(
-                    title = nutriItem.title ?: "Data Is Missing !",
-                    mediaCover = null,
-                    isBookmarked = true
-                )
+//                Log.d("DetailEventActivity", "Event data: $nutriItem") // log untuk lihat data
 
             } else {
                 handleError()
@@ -109,6 +95,16 @@
                                 binding.favoriteButton.setImageResource(R.drawable.baseline_favorite_border_24)
                             }
                         }
+                        // Initialize NutriEntity
+                        database = NutriEntity(
+                            title = data.title ?: "Data Is Missing!",
+                            mediaCover = null,
+                            calories = data.calories ?: 0,
+                            protein = data.protein ?: 0,
+                            fat = data.fat ?: 0,
+                            sodium = data.sodium ?: 0,
+                            isBookmarked = true
+                        )
                     }
                 }
             }
