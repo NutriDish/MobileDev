@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="20dp"
-            android:text="Date"
+            android:text="@string/date"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameEditTextLayout" />
@@ -183,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_18"
-                android:hint="Enter New Date"
+                android:hint="@string/enter_new_date"
                 android:focusable="false"
                 android:clickable="true"
                 android:inputType="none"

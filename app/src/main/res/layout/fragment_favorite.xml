@@ -64,7 +64,7 @@
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Data Favorite is Empty"
+            android:text="@string/data_favorite_is_empty"
             android:gravity="center"
             android:visibility="gone"
             android:textSize="16sp"
