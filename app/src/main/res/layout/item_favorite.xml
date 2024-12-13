@@ -29,7 +29,7 @@
             card_view:layout_constraintHorizontal_bias="1.0"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            android:background="@drawable/filter"/>
 
         <TextView
             android:id="@+id/tv_item_name"

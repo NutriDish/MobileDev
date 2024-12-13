@@ -110,21 +110,18 @@ class DashboardFragment : Fragment() {
                 if (recipes.isNullOrEmpty()) {
                     Log.d("DashboardFragment", "Today recipes is empty")
                 } else {
-                    // Pilih satu resep acak dari daftar resep yang diterima
                     val randomRecipe = recipes.randomOrNull()
                     randomRecipe?.let {
-                        if (isAdded && _binding != null) { // Periksa apakah binding masih tersedia
+                        if (isAdded && _binding != null) {
                             bindingSafe?.textScheduleTitle?.text = it.title ?: "Unknown"
-                            Glide.with(requireContext()).load(R.drawable.imgfood14)
-                                .into(bindingSafe?.scheduleIcon ?: return@let)
+//                            Glide.with(requireContext()).load(R.drawable.imgfood14)
+//                                .into(bindingSafe?.scheduleIcon ?: return@let)
                         }
                     }
                 }
             }
         }
     }
-
-
 
     private fun getRecommendedRecipes() {
         val factory = ViewModelFactory.getInstance(requireActivity())
