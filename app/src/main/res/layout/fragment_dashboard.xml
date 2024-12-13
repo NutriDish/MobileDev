@@ -117,7 +117,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.454"
-                    tools:src="@tools:sample/avatars" />
+                    android:background="@drawable/filterrecipebreakfastmapleandouillebreakfastsausage"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/scheduleDetailsLayout"
@@ -131,38 +131,21 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0">
 
-                    <TextView
-                        android:id="@+id/textScheduleTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ScheduleText"
-                        android:textColor="@android:color/holo_orange_light"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textScheduleAuthor"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Samantha Irvin"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textScheduleTitle" />
-
-                    <TextView
-                        android:id="@+id/textScheduleDetails"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="20 min\n6 ingredients, 4 steps"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textScheduleAuthor" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/textScheduleTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ScheduleText"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/scheduleIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
