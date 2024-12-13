@@ -1,5 +1,7 @@
 package com.dicoding.nutridish.view.dashboard
 
+import android.nfc.tech.MifareUltralight.PAGE_SIZE
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +16,9 @@ class DashboardViewModel(
 ) : ViewModel(){
     private val _recipesRecommended = MutableLiveData<List<ResponseItem?>?>(mutableListOf())
     val recipesRecommended: LiveData<List<ResponseItem?>?> get() = _recipesRecommended
+
+    private val _recipesToday = MutableLiveData<List<ResponseItem?>?>(mutableListOf())
+    val recipesToday: LiveData<List<ResponseItem?>?> get() = _recipesToday
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -39,7 +44,7 @@ class DashboardViewModel(
         setLoading(true)
         viewModelScope.launch {
             try {
-                val result = repository.searchRecipes(query, filters, currentPage)
+                val result = repository.loadRecipes(query, filters, currentPage)
 
                 if (result.isNullOrEmpty()) {
                     isAllDataLoaded = true
@@ -56,6 +61,40 @@ class DashboardViewModel(
             }
         }
     }
+
+    fun getTodayRecipe(query: String, filters: String? = null) {
+        // Reset pagination jika query atau filters berubah
+        if (query != lastQuery || filters != lastFilters) {
+            currentPage = 1
+            isAllDataLoaded = false
+            _recipesToday.value = mutableListOf()
+            lastQuery = query
+            lastFilters = filters
+        }
+
+        if (isAllDataLoaded) return
+
+        setLoading(true)
+        viewModelScope.launch {
+            try {
+                val result = repository.loadRecipesToday(query, filters, currentPage)
+
+                if (result.isNullOrEmpty()) {
+                    isAllDataLoaded = true
+                } else {
+                    val currentList = _recipesToday.value?.toMutableList() ?: mutableListOf()
+                    currentList.addAll(result)
+                    _recipesToday.postValue(currentList)
+                    currentPage++
+                }
+            } catch (e: Exception) {
+                _recipesToday.postValue(emptyList())
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
+
     fun setLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
     }

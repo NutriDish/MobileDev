@@ -41,6 +41,7 @@ import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.*
 import android.os.Build.VERSION_CODES
+import com.bumptech.glide.Glide
 import com.dicoding.nutridish.notification.NotificationsBottomSheet
 
 class DashboardFragment : Fragment() {
@@ -75,9 +76,55 @@ class DashboardFragment : Fragment() {
         setupRecyclerView()
         setupTimeUpdates()
         checkLocationPermissionAndFetchTemperature()
-        getRecommendedRecipes()
+        lifecycleScope.launch {
+            getRecommendedRecipes()
+            delay(2000)
+            getTodayRecipe()
+        }
         scheduleMealNotifications()
     }
+
+    private fun getTodayRecipe() {
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        val viewModel: DashboardViewModel by viewModels { factory }
+
+        lifecycleScope.launch {
+            // Pastikan View hanya diakses jika masih terikat ke Lifecycle
+            if (!isAdded || _binding == null) {
+                return@launch
+            }
+
+            val currentMillis = System.currentTimeMillis()
+            val hour = Calendar.getInstance().apply { timeInMillis = currentMillis }
+                .get(Calendar.HOUR_OF_DAY)
+
+            // Tentukan filter berdasarkan waktu (misalnya pagi, siang, malam)
+            val filter = when {
+                hour in 6..11 -> "breakfast"
+                hour in 12..17 -> "lunch"
+                else -> "dinner"
+            }
+
+            viewModel.getTodayRecipe("all", filter)
+            viewModel.recipesToday.observe(viewLifecycleOwner) { recipes ->
+                if (recipes.isNullOrEmpty()) {
+                    Log.d("DashboardFragment", "Today recipes is empty")
+                } else {
+                    // Pilih satu resep acak dari daftar resep yang diterima
+                    val randomRecipe = recipes.randomOrNull()
+                    randomRecipe?.let {
+                        if (isAdded && _binding != null) { // Periksa apakah binding masih tersedia
+                            bindingSafe?.textScheduleTitle?.text = it.title ?: "Unknown"
+                            Glide.with(requireContext()).load(R.drawable.imgfood14)
+                                .into(bindingSafe?.scheduleIcon ?: return@let)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 
     private fun getRecommendedRecipes() {
         val factory = ViewModelFactory.getInstance(requireActivity())
@@ -85,28 +132,28 @@ class DashboardFragment : Fragment() {
         recommendationAdapter = DashboardRecommendationAdapter()
         val filters = listOf("breakfast", "lunch", "dinner")
         val randomFilter = filters.random()
-        lifecycleScope.launch {
-            viewModel.getRecommendedRecipe("all", randomFilter)
-            viewModel.recipesRecommended.observe(viewLifecycleOwner) { recipes ->
-                if (recipes.isNullOrEmpty()) {
-                    Log.d("DashboardFragment", "Recommended recipes is empty")
-                } else {
-                    val items = recipes.map {
-                        ResponseItem(title = it?.title ?: "Unknown")
-                    }
-                    recommendationAdapter.submitList(items)
+        viewModel.getRecommendedRecipe("all", randomFilter)
 
-                    bindingSafe?.recyclerViewRecommendation?.apply {
-                        layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                        adapter = recommendationAdapter
-                    }
+        viewModel.recipesRecommended.observe(viewLifecycleOwner) { recipes ->
+            if (recipes.isNullOrEmpty()) {
+                Log.d("DashboardFragment", "Recommended recipes is empty")
+            } else {
+                val items = recipes.map {
+                    ResponseItem(title = it?.title ?: "Unknown")
                 }
+                recommendationAdapter.submitList(items)
+
+                bindingSafe?.recyclerViewRecommendation?.apply {
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = recommendationAdapter
+                }
+
+                Toast.makeText(requireContext(), "Recommendations Loaded", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
-        Toast.makeText(requireContext(), "Searching Recommendations Recipe", Toast.LENGTH_SHORT)
-            .show()
     }
 
     private fun setupGreeting() {

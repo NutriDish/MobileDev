@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,18 +68,25 @@ class ExploreFragment : Fragment() {
 
     private val requestPermissionLauncher: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions[Manifest.permission.CAMERA] == true &&
-                permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true
-            ) {
+            val deniedPermissions = permissions.filterValues { !it }.keys
+
+            if (deniedPermissions.isEmpty()) {
                 openCamera()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Permissions are required to use the camera.",
+                    "Permissions required: ${deniedPermissions.joinToString(", ")}",
                     Toast.LENGTH_SHORT
                 ).show()
+                requestSpecificPermissions(deniedPermissions.toTypedArray())
             }
         }
+
+    private fun requestSpecificPermissions(permissions: Array<String>) {
+        if (permissions.isNotEmpty()) {
+            requestPermissionLauncher.launch(permissions)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -195,24 +201,28 @@ class ExploreFragment : Fragment() {
         dialog.show()
     }
 
-    @SuppressLint("ObsoleteSdkInt")
     private fun checkCameraPermissionAndOpenCamera() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-            (ContextCompat.checkSelfPermission(
+        val permissionsToRequest = mutableListOf<String>()
+
+        if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED)
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            )
+            permissionsToRequest.add(Manifest.permission.CAMERA)
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R &&
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            requestSpecificPermissions(permissionsToRequest.toTypedArray())
         } else {
             openCamera()
         }
