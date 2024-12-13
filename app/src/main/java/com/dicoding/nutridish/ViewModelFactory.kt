@@ -14,7 +14,6 @@ import com.dicoding.nutridish.main.MainViewModel
 import com.dicoding.nutridish.view.dashboard.DashboardViewModel
 import com.dicoding.nutridish.view.detail.DetailViewModel
 import com.dicoding.nutridish.view.explore.ExploreViewModel
-import com.dicoding.nutridish.view.explore.upload.UploadImageViewModel
 import com.dicoding.nutridish.view.favorite.FavoriteViewModel
 import com.dicoding.nutridish.view.profile.ProfileViewModel
 
@@ -45,9 +44,6 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(DashboardViewModel::class.java) -> {
                 DashboardViewModel(userRepository) as T
-            }
-            modelClass.isAssignableFrom(UploadImageViewModel::class.java) -> {
-                UploadImageViewModel(userRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
