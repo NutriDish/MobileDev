@@ -87,6 +87,47 @@ class UserRepository private constructor(
         }
     }
 
+    suspend fun loadRecipes(query: String, filters: String?, page: Int = 1, pageSize: Int = 10): List<ResponseItem?>? {
+        return try {
+            val response = apiService.searchRecipes(query, filters)
+            if (response.isSuccessful) {
+                val allRecipes = response.body() ?: emptyList()
+                val startIndex = (page - 1) * pageSize
+                val endIndex = minOf(startIndex + pageSize, allRecipes.size)
+
+                if (startIndex >= allRecipes.size) {
+                    emptyList() // Return empty list if page is beyond available data
+                } else {
+                    allRecipes.subList(startIndex, endIndex)
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+    suspend fun loadRecipesToday(query: String, filters: String?, page: Int = 1, pageSize: Int = 5): List<ResponseItem?>? {
+        return try {
+            val response = apiService.searchRecipes(query, filters)
+            if (response.isSuccessful) {
+                val allRecipes = response.body() ?: emptyList()
+                val startIndex = (page - 1) * pageSize
+                val endIndex = minOf(startIndex + pageSize, allRecipes.size)
+
+                if (startIndex >= allRecipes.size) {
+                    emptyList() // Return empty list if page is beyond available data
+                } else {
+                    allRecipes.subList(startIndex, endIndex)
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     fun uploadImage(imageFile: File) = liveData {
         emit(Result.Loading)
         val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
