@@ -49,17 +49,18 @@ class DashboardFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var recentlyAdapter: DashboardAdapter
+    private lateinit var recommendationAdapter: DashboardRecommendationAdapter
 
     private var _binding: FragmentDashboardBinding? = null
-    private val binding get() = _binding!!
+    private val bindingSafe get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentDashboardBinding.inflate(layoutInflater, container, false)
-        return binding.root
+        return _binding?.root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -74,8 +75,38 @@ class DashboardFragment : Fragment() {
         setupRecyclerView()
         setupTimeUpdates()
         checkLocationPermissionAndFetchTemperature()
-
+        getRecommendedRecipes()
         scheduleMealNotifications()
+    }
+
+    private fun getRecommendedRecipes() {
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        val viewModel: DashboardViewModel by viewModels { factory }
+        recommendationAdapter = DashboardRecommendationAdapter()
+        val filters = listOf("breakfast", "lunch", "dinner")
+        val randomFilter = filters.random()
+        lifecycleScope.launch {
+            viewModel.getRecommendedRecipe("all", randomFilter)
+            viewModel.recipesRecommended.observe(viewLifecycleOwner) { recipes ->
+                if (recipes.isNullOrEmpty()) {
+                    Log.d("DashboardFragment", "Recommended recipes is empty")
+                } else {
+                    val items = recipes.map {
+                        ResponseItem(title = it?.title ?: "Unknown")
+                    }
+                    recommendationAdapter.submitList(items)
+
+                    bindingSafe?.recyclerViewRecommendation?.apply {
+                        layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        adapter = recommendationAdapter
+                    }
+                }
+            }
+        }
+
+        Toast.makeText(requireContext(), "Searching Recommendations Recipe", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun setupGreeting() {
@@ -86,14 +117,18 @@ class DashboardFragment : Fragment() {
                 .get()
                 .addOnSuccessListener { document ->
                     val userName = document?.getString("userName") ?: "User"
-                    binding.textGreeting.text = "Hi, $userName"
+                    bindingSafe?.textGreeting?.text = "Hi, $userName"
                 }
                 .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Gagal memuat data pengguna.", Toast.LENGTH_SHORT).show()
-                    binding.textGreeting.text = "Hi, User"
+                    Toast.makeText(
+                        requireContext(),
+                        "Gagal memuat data pengguna.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    bindingSafe?.textGreeting?.text = "Hi, User"
                 }
         } else {
-            binding.textGreeting.text = "Hi, Guest"
+            bindingSafe?.textGreeting?.text = "Hi, Guest"
         }
     }
 
@@ -114,12 +149,12 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        binding.recyclerViewRecentlyAdded.apply {
+        bindingSafe?.recyclerViewRecentlyAdded?.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recentlyAdapter
         }
 
-        binding.iconNotification.setOnClickListener {
+        bindingSafe?.iconNotification?.setOnClickListener {
             NotificationsBottomSheet().show(parentFragmentManager, "NotificationsBottomSheet")
         }
 
@@ -130,7 +165,7 @@ class DashboardFragment : Fragment() {
             while (isAdded) {
                 val currentTime = Calendar.getInstance().time
                 val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-                binding.textTime.text = timeFormat.format(currentTime)
+                bindingSafe?.textTime?.text = timeFormat.format(currentTime)
                 delay(1000)
             }
         }
@@ -159,7 +194,7 @@ class DashboardFragment : Fragment() {
             if (location != null) {
                 fetchTemperature(location.latitude, location.longitude)
             } else {
-                binding.textTemperature.text = "N/A"
+                bindingSafe?.textTemperature?.text = "N/A"
             }
         }
     }
@@ -178,70 +213,13 @@ class DashboardFragment : Fragment() {
                 response: retrofit2.Response<WeatherResponse>
             ) {
                 val temp = response.body()?.main?.temp ?: 0.0
-                binding.textTemperature.text = "${temp.toInt()}°C"
+                bindingSafe?.textTemperature?.text = "${temp.toInt()}°C"
             }
 
             override fun onFailure(call: retrofit2.Call<WeatherResponse>, t: Throwable) {
-                binding.textTemperature.text = "N/A"
+                bindingSafe?.textTemperature?.text = "N/A"
             }
         })
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun scheduleMealNotifications() {
-        if (!isNotificationPermissionGranted()) {
-            requestNotificationPermission()
-            return
-        }
-
-        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
-            startActivity(intent)
-            Toast.makeText(
-                requireContext(),
-                "Silakan izinkan aplikasi untuk menjadwalkan alarm yang tepat.",
-                Toast.LENGTH_LONG
-            ).show()
-            return
-        }
-
-        val mealTimes = listOf(
-            Pair(7, "Breakfast time! Don't forget to eat."),
-            Pair(13, "Lunch time! It's important to stay energized."),
-            Pair(21, "Dinner time! End your day with a good meal.")
-        )
-
-        for ((hour, message) in mealTimes) {
-            try {
-                val intent = NotificationReceiver.createIntent(requireContext(), "Meal Reminder", message)
-                val pendingIntent = PendingIntent.getBroadcast(
-                    requireContext(),
-                    hour,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
-
-                val calendar = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, hour)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                }
-
-                if (calendar.timeInMillis < System.currentTimeMillis()) {
-                    calendar.add(Calendar.DAY_OF_YEAR, 1)
-                }
-
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.timeInMillis,
-                    pendingIntent
-                )
-            } catch (e: SecurityException) {
-                Toast.makeText(requireContext(), "Gagal menjadwalkan alarm: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
     private fun isNotificationPermissionGranted(): Boolean {
@@ -317,6 +295,60 @@ class DashboardFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun scheduleMealNotifications() {
+        if (!isNotificationPermissionGranted()) {
+            requestNotificationPermission()
+            return
+        }
+
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+            startActivity(intent)
+            Toast.makeText(
+                requireContext(),
+                "Silakan izinkan aplikasi untuk menjadwalkan alarm yang tepat.",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        val mealTimes = listOf(
+            Pair(7, "Breakfast time! Don't forget to eat."),
+            Pair(13, "Lunch time! It's important to stay energized."),
+            Pair(21, "Dinner time! End your day with a good meal.")
+        )
+
+        for ((hour, message) in mealTimes) {
+            try {
+                val intent =
+                    NotificationReceiver.createIntent(requireContext(), "Meal Reminder", message)
+                val pendingIntent = PendingIntent.getBroadcast(
+                    requireContext(),
+                    hour,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+
+                val calendar = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, hour)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    if (before(Calendar.getInstance())) {
+                        add(Calendar.DAY_OF_YEAR, 1)
+                    }
+                }
+
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
+            } catch (e: Exception) {
+                Log.e("NotificationError", "Failed to schedule notification: ${e.message}")
+            }
+        }
+    }
 }
-
-
